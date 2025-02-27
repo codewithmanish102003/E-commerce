@@ -1,7 +1,7 @@
-"use client"
 import React, { useState,useEffect } from "react"
-import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
+import {loginThunk} from "../../app/features/auth/authThunk"
+import {useDispatch} from "react-redux"
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,10 +9,10 @@ const Login = () => {
     email: "",
     password: "",
   })
-  const [isLoginForm, setIsLoginForm] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (success || error) {
@@ -32,16 +32,6 @@ const Login = () => {
     })
   }
 
-  const handleRegister = async (e) => {
-    e.preventDefault()
-    try {
-      const response = await axios.post("http://localhost:3000/api/user/register", formData)
-      console.log("Registration successful:", response.data)
-      setIsLoginForm(true)
-    } catch (error) {
-      console.error("Error registering user:", error)
-    }
-  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -49,16 +39,16 @@ const Login = () => {
     setError("");
   
     try {
-      const response = await axios.post("http://localhost:3000/api/user/login", formData);
-      console.log("Login successful:", response.data);
-      setSuccess(response.data.message);
-      if (response.data.role === "owner") {
-        navigate("/owner_profile", { state: { success: response.data.message } });
+      const response = await dispatch(loginThunk(formData)).unwrap();
+      console.log("Login successful:", response);
+      setSuccess(response.message);
+      if (response.role === "owner") {
+        navigate("/owner_profile", { state: { success: response.message } });
       } else {
-        navigate("/", { state: { success: response.data.message } });
+        navigate("/", { state: { success: response.message } });
       }
     } catch (error) {
-      setError(error.response?.data?.error || "Login failed. Please try again.");
+      setError(error.message || "Login failed. Please try again.");
       console.error("Error logging in user:", error);
     }
   };
@@ -84,85 +74,8 @@ const Login = () => {
               <span className="block sm:inline">{error}</span>
             </div>
           )}
-          <div className="relative">
-            <div
-              className="transition-transform duration-500 ease-in-out transform"
-              style={{ transform: isLoginForm ? "translateX(-120%)" : "translateX(0)" }}
-            >
-              {/* Register Form */}
-              <div className="space-y-6">
-                <h3 className="text-xl font-medium text-gray-900">Create your account</h3>
-                <form onSubmit={handleRegister} className="space-y-4">
-                  <div>
-                    <label htmlFor="fullname" className="block text-sm font-medium text-gray-700">
-                      Full Name
-                    </label>
-                    <input
-                      id="fullname"
-                      name="fullname"
-                      type="text"
-                      required
-                      value={formData.fullname}
-                      onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      Email
-                    </label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                      Password
-                    </label>
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      required
-                      value={formData.password}
-                      onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                    />
-                  </div>
-                  <div className="flex gap-4">
-                    <button
-                      type="submit"
-                      className="flex-1 justify-center rounded-full border border-transparent bg-blue-500 py-2 px-4 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
-                    >
-                      Create My Account
-                    </button>
-                    <Link
-                      to="/login/owner_register"
-                      className="flex-1 justify-center rounded-full border border-transparent bg-blue-500 py-2 px-4 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 text-center flex items-center cursor-pointer"
-                    >
-                      Register As Owner
-                    </Link>
-                  </div>
-                </form>
-                <div className="mt-4 text-center">
-                  <button onClick={() => setIsLoginForm(true)} className="text-sm text-blue-500 hover:text-blue-600 cursor-pointer">
-                    Already have an account? Login
-                  </button>
-                </div>
-              </div>
-            </div>
-
             {/* Login Form */}
-            <div
-              className="absolute top-0 left-full w-full transition-transform duration-500 ease-in-out transform"
-              style={{ transform: isLoginForm ? "translateX(-100%)" : "translateX(15%)" }}
-            >
+           
               <div className="space-y-6">
                 <h3 className="text-xl font-medium text-gray-900">Login to your account</h3>
                 <form onSubmit={handleLogin} className="space-y-4">
@@ -202,16 +115,15 @@ const Login = () => {
                   </button>
                 </form>
                 <div className="mt-4 text-center">
-                  <button onClick={() => setIsLoginForm(false)} className="text-sm text-blue-500 hover:text-blue-600 cursor-pointer">
-                    Need an account? Register
+                  <button className="text-sm text-blue-500 hover:text-blue-600 cursor-pointer">
+                    Need an account?<Link to="/register"> Register</Link>
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    
   )
 }
 

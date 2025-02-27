@@ -1,7 +1,7 @@
+// filepath: /d:/E-commerce/Backend/app.js
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
-// const path = require('path');
 const expressSession = require('express-session');
 const flash = require('connect-flash');
 const cors = require('cors');
@@ -15,9 +15,11 @@ const indexRouter = require('./routes/indexRouter');
 
 const db = require('./config/mongoose_connection');
 
-
 app.use(flash());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // Adjust this to your frontend URL
+    credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

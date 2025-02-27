@@ -88,11 +88,11 @@ module.exports.loginUser = async (req, res) => {
                     let role = owner.role;
                     console.log("role", role);
                     let token = generateToken(owner);
-                    res.cookie("token", token);
+                    res.cookie("token", token, { httpOnly: true, sameSite: 'None', secure: true });
                     const products = await productModel.find({ owner: owner._id });
                     
                     req.flash('success_msg', 'Login successful');
-                    return res.status(200).json({ message: 'Login successful', token, products, role, flash: req.flash() });
+                    return res.status(200).json({ message: 'Login successful', owner,token, products, role, flash: req.flash() });
                 } else {
                     req.flash('error_msg', 'Invalid credentials');
                     return res.status(401).json({ error: 'Invalid credentials', flash: req.flash() });
@@ -106,9 +106,9 @@ module.exports.loginUser = async (req, res) => {
         bcrypt.compare(password, user.password, (err, result) => {
             if (result) {
                 let token = generateToken(user);
-                res.cookie("token", token);
+                res.cookie("token", token, { httpOnly: true, sameSite: 'None', secure: true });
                 req.flash('success_msg', 'Login successful');
-                return res.status(200).json({ message: 'Login successful', token, flash: req.flash() });
+                return res.status(200).json({ message: 'Login successful',user, token, flash: req.flash() });
             } else {
                 req.flash('error_msg', 'Invalid credentials');
                 return res.status(401).json({ error: 'Invalid credentials', flash: req.flash() });
@@ -118,6 +118,7 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.logout = (req, res) => {
+    console.log("route /logout hitted");
     res.clearCookie("token");
     req.flash('success_msg', 'Logged out successfully');
     res.status(200).json({ message: 'Logged out successfully', flash: req.flash() });

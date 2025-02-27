@@ -1,8 +1,7 @@
-"use client"
-
 import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
+import { useDispatch } from "react-redux"
 
 const Owner_Register = () => {
     const [formData, setFormData] = useState({

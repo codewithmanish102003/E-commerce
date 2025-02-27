@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:3000/api'; // Adjust the URL as needed
 // Register user
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/register`, userData);
+    const response = await axios.post(`${API_URL}/user/register`, userData);
     return response.data;
   } catch (error) {
     console.error('Error registering user:', error);
@@ -16,7 +16,7 @@ export const registerUser = async (userData) => {
 // Login user
 export const loginUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/login`, userData);
+    const response = await axios.post(`${API_URL}/user/login`, userData);
     return response.data;
   } catch (error) {
     console.error('Error logging in user:', error);
@@ -26,8 +26,9 @@ export const loginUser = async (userData) => {
 
 // Logout user
 export const logoutUser = async () => {
+  console.log("User logged out")
   try {
-    const response = await axios.post(`${API_URL}/auth/logout`);
+    const response = await axios.post(`${API_URL}/user/logout`);
     return response.data;
   } catch (error) {
     console.error('Error logging out user:', error);
@@ -49,54 +50,3 @@ export const handleLogin = async (email, password) => {
   }
 };
 
-//fetch users data
-export const fetchUserData = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/users`);
-    console.log('User Data:', response.data); // Debugging log
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    throw error;
-  }
-};
-
-// Fetch logged-in user data
-export const fetchLogUserData = async (token) => {
-  try {
-    const response = await axios.get(`${API_URL}/userdata`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    throw error;
-  }
-};
-
-// Forgot password
-export const forgotPassword = async (userData) => {
-  try {
-    const response = await axios.post(`${API_URL}/auth/forgot-password`, userData);
-    return response.data;
-  } catch (error) {
-    console.error('Error sending reset email:', error);
-    if (error.response) {
-      console.error('Error response:', error.response.data);
-    }
-    throw error;
-  }
-};
-
-// Reset password
-export const resetPassword = async (token, userData) => {
-  try {
-    const response = await axios.post(`${API_URL}/auth/reset-password/${token}`, userData);
-    return response.data;
-  } catch (error) {
-    console.error('Error resetting password:', error);
-    throw error;
-  }
-};

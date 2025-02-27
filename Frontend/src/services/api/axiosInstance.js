@@ -1,12 +1,14 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api", // Change this to your backend URL
+  baseURL: "http://localhost:3000/api",
   timeout: 10000, // Timeout after 10 seconds
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true, // Add this line
 });
+
 
 // Add a request interceptor (e.g., attach auth token)
 axiosInstance.interceptors.request.use(
