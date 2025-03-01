@@ -10,7 +10,8 @@ const NavigationBar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-    const username = useSelector((state) => state.auth.username); // Get the username from the state
+    const username = useSelector((state) => state.auth.username);
+    
     const dispatch = useDispatch();
     
     const toggleMenu = () => {
@@ -95,7 +96,7 @@ const NavigationBar = () => {
                                 {isLoggedIn ? username : "Profile"}
                                 <ChevronDown className="w-4 h-4 ml-2" />
                             </button>
-                            {isDropdownOpen && <UserDropdown />}
+                            {isDropdownOpen && <UserDropdown setIsDropdownOpen={setIsDropdownOpen} />}
                         </div>
                         {isLoggedIn ? (
                             <button 
@@ -159,7 +160,7 @@ const NavigationBar = () => {
                                 Login
                             </Link>
                         )}
-                        {isLoggedIn && <UserDropdown />}
+                        {isLoggedIn && <UserDropdown setIsDropdownOpen={setIsDropdownOpen} />}
                     </div>
                 </div>
             )}

@@ -1,3 +1,4 @@
+// filepath: /d:/E-commerce/Frontend/src/services/api/axiosInstance.js
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -8,7 +9,6 @@ const axiosInstance = axios.create({
   },
   withCredentials: true, // Add this line
 });
-
 
 // Add a request interceptor (e.g., attach auth token)
 axiosInstance.interceptors.request.use(

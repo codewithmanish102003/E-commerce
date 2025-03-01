@@ -21,17 +21,13 @@ const productSchema = new mongoose.Schema({
         required: true,
     },
     image: {
-        type: Buffer, // Store image as a Buffer
+        type: Buffer,
     },
     bgcolor: {
         type: String,
         required: true,
     },
-    panelcolor: {
-        type: String,
-        required: true,
-    },
-    textcolor: {
+    description:{
         type: String,
         required: true,
     },

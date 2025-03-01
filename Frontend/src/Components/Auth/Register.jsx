@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react"
-import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
+import { registerUserThunk } from "../../app/features/auth/authThunk"
+import { useDispatch } from "react-redux"
+
+
+
 const Register = () => {
 
     const [formData, setFormData] = useState({
@@ -11,6 +15,7 @@ const Register = () => {
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (success || error) {
@@ -33,11 +38,12 @@ const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post("http://localhost:3000/api/user/register", formData)
-            console.log("Registration successful:", response.data)
-            navigate("/login")
+            const response = await dispatch(registerUserThunk(formData)).unwrap();
+            console.log("Registration successful:", response.message);
+            navigate("/login", { state: { success: response.message } });
         } catch (error) {
-            console.error("Error registering user:", error)
+            setError(error || "Registration failed. Please try again.");
+            // console.error("Registration failed:", error);
         }
     }
 

@@ -13,15 +13,15 @@ import Create_Products from './Components/Owner/Create_Products';
 import AllProducts from './Components/Owner/AllProducts';
 import Footer from './Components/Partials/Footer';
 import ProductDetails from './Components/Products/ProductDetails';
+import './App.css';
 
 const App = () => {
     return (
         <Router>
             <NavigationBar />
             <div className='w-full h-3 bg-gray-100'>
-
             </div>
-            <Routes className="bg-gray-50">
+            <Routes className="bg-gray-50 hide-scrollbar">
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />

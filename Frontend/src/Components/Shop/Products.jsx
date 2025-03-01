@@ -26,9 +26,7 @@ const Products = () => {
           <div className="flex flex-col gap-4 flex-wrap justify-center items-center">
             {products.map((product) => (
               <React.Fragment key={product._id}>
-                <Link to="/details">
                   <ProductCard product={product} />
-                </Link>
                 <div className='w-full bg-black h-[1px]'></div>
               </React.Fragment>
             ))}

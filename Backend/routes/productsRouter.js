@@ -5,9 +5,7 @@ const upload = require('../config/multer_config');
 const productModel = require('../models/product_model');
 const isLoggedInUser= require('../middlewares/isLoggedInUser');
 
-router.get('/', async (req, res) => {
-    console.log("product routes GET hitted");
-    
+router.get('/', async (req, res) => { 
     try {
         let products = await productModel.find({});
         products = products.map(product => {

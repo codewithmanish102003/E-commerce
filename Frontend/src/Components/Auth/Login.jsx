@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {loginThunk} from "../../app/features/auth/authThunk"
 import {useDispatch} from "react-redux"
+import { useLocation } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,12 +14,15 @@ const Login = () => {
   const [success, setSuccess] = useState("")
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation();
+    const successMessage = location.state?.success;
 
   useEffect(() => {
-    if (success || error) {
+    if (success || error || successMessage) {
       const timer = setTimeout(() => {
         setSuccess("");
         setError("");
+        location.state = null;
       }, 5000); // 5 seconds
 
       return () => clearTimeout(timer);
@@ -40,7 +44,6 @@ const Login = () => {
   
     try {
       const response = await dispatch(loginThunk(formData)).unwrap();
-      console.log("Login successful:", response);
       setSuccess(response.message);
       if (response.role === "owner") {
         navigate("/owner_profile", { state: { success: response.message } });
@@ -48,8 +51,8 @@ const Login = () => {
         navigate("/", { state: { success: response.message } });
       }
     } catch (error) {
-      setError(error.message || "Login failed. Please try again.");
-      console.error("Error logging in user:", error);
+      setError(error || "Login failed. Please try again.");
+      console.log(error);
     }
   };
 
@@ -64,6 +67,11 @@ const Login = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 relative overflow-hidden">
+        {successMessage && (
+                <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <span className="block sm:inline">{successMessage}</span>
+                </div>
+            )}
         {success && (
             <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4" role="alert">
               <span className="block sm:inline">{success}</span>

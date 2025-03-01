@@ -17,7 +17,7 @@ const ownerSchema = new mongoose.Schema({
         ref: "product",
     }],
     image: {
-        type: Buffer, // Store image as a Buffer
+        type: Buffer,
     },
     contact:{
         type:Number,

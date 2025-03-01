@@ -1,3 +1,5 @@
+import { Star, StarHalf } from "lucide-react";
+
 const formatCurrency = (amount) => {
     return new Intl.NumberFormat("en-IN", {
       style: "currency",
@@ -38,8 +40,15 @@ const formatCurrency = (amount) => {
               <span className="font-bold">{formatCurrency(product.price)}</span>
             )}
           </p>
+          <div><strong>Description : </strong></div>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti totam quis qui autem tempora optio nisi sint, corporis quo aliquam voluptatem nemo delectus dicta illo?
           </p>
+          <div className="flex  items-center gap-2">
+            <strong>Ratings : </strong><Star size={20} className="text-yellow-500" />
+            <Star size={20} className="text-yellow-500" />
+            <Star size={20} className="text-yellow-500" />
+            <StarHalf size={20} className="text-yellow-500" />
+          </div>
         </div>
       </div>
     )
