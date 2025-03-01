@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react"
+import  { useState,useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {loginThunk} from "../../app/features/auth/authThunk"
 import {useDispatch} from "react-redux"
@@ -41,6 +41,7 @@ const Login = () => {
     try {
       const response = await dispatch(loginThunk(formData)).unwrap();
       console.log("Login successful:", response);
+      console.log("Data submission successful")
       setSuccess(response.message);
       if (response.role === "owner") {
         navigate("/owner_profile", { state: { success: response.message } });
