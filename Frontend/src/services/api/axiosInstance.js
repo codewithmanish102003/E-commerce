@@ -5,7 +5,6 @@ const axiosInstance = axios.create({
   baseURL: "http://localhost:3000/api",
   timeout: 10000, // Timeout after 10 seconds
   headers: {
-    "start":"startway",
     "Content-Type": "application/json",
   },
   withCredentials: true, // Add this line
