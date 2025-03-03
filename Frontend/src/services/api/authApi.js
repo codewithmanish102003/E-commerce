@@ -44,6 +44,17 @@ export const logoutUser = async () => {
   }
 };
 
+// Fetch user details
+export const fetchUserDetails = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/user/me`, { withCredentials: true });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    throw error;
+  }
+};
+
 // Handle login
 export const handleLogin = async (email, password) => {
   try {
@@ -57,4 +68,3 @@ export const handleLogin = async (email, password) => {
     throw error;
   }
 };
-

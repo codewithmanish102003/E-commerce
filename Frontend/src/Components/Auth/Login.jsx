@@ -15,7 +15,7 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation();
-    const successMessage = location.state?.success;
+  const successMessage = location.state?.success;
 
   useEffect(() => {
     if (success || error || successMessage) {
@@ -46,7 +46,7 @@ const Login = () => {
       const response = await dispatch(loginThunk(formData)).unwrap();
       setSuccess(response.message);
       if (response.role === "owner") {
-        navigate("/owner_profile", { state: { success: response.message } });
+        navigate("/owner", { state: { success: response.message } });
       } else {
         navigate("/", { state: { success: response.message } });
       }

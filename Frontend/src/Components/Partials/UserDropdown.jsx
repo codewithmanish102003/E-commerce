@@ -44,7 +44,7 @@ export default function UserDropdown({ setIsDropdownOpen }) {
                 <DropdownItem icon={<Box />} text="Orders" />
                 <DropdownItem icon={<Bell />} text="Notifications" />
                 {isLoggedIn && (
-                    <button onClick={handleLogout} type="button">
+                    <button onClick={handleLogout} type="button" className="w-full">
                         <DropdownItem icon={<LogOut className="text-red-500" />} text="Logout" />
                     </button>
                 )}

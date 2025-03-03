@@ -20,6 +20,8 @@ router.get('/', async (req, res) => {
     }
 });
 router.post('/create', isLoggedInUser , upload.single('image'), async (req, res) => {
+    console.log("hitted upload");
+    
     try {
         let { name, price, discount, bgcolor, panelcolor, textcolor } = req.body;
 
@@ -45,8 +47,6 @@ router.post('/create', isLoggedInUser , upload.single('image'), async (req, res)
             $push: { products: product._id }
         });
 
-        req.flash("success", "Product created successfully");
-        res.status(201).redirect("/owners/admin");
     } catch (error) {
         res.status(500).send(error.message);
     }

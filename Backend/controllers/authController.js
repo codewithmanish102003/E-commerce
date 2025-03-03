@@ -74,12 +74,14 @@ module.exports.registerAdmin = async (req, res) => {
 
 module.exports.loginUser = async (req, res) => {
     let { email, password } = req.body;
-
+    console.log("route login")
     let user = await userModel.findOne({ email });
     if (!user) {
         let owner = await ownerModel.findOne({ email });
         if (owner) {
             bcrypt.compare(password, owner.password, async (err, result) => {
+                console.log(result);
+                
                 if (result) {
                     let role = owner.role;
                     let token = generateToken(owner);

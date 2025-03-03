@@ -12,7 +12,6 @@ const formatCurrency = (amount) => {
   
     return (
       <div className="flex flex-row gap-5 w-[95vw] h-50 rounded-lg overflow-hidden">
-
         <div className="w-1/4 relative border-r-2 border-gray-400 flex items-center justify-center">
 
         {product.image ? (
@@ -43,7 +42,7 @@ const formatCurrency = (amount) => {
           <div><strong>Description : </strong></div>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti totam quis qui autem tempora optio nisi sint, corporis quo aliquam voluptatem nemo delectus dicta illo?
           </p>
-          <div className="flex  items-center gap-2">
+          <div className="flex items-center gap-2">
             <strong>Ratings : </strong><Star size={20} className="text-yellow-500" />
             <Star size={20} className="text-yellow-500" />
             <Star size={20} className="text-yellow-500" />

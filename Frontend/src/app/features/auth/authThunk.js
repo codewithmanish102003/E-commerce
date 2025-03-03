@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, logoutUser,registerUser } from "../../../services/api/authApi";
+import { loginUser, logoutUser,registerUser,fetchUserDetails } from "../../../services/api/authApi";
 
 export const registerUserThunk = createAsyncThunk(
   "auth/register",
@@ -42,6 +42,19 @@ export const logoutThunk = createAsyncThunk(
       const response = await logoutUser();
       localStorage.removeItem("token");
       localStorage.removeItem("role");
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Fetch user
+export const fetchUserDetailsThunk = createAsyncThunk(
+  "auth/fetchUserDetails",
+  async (_, thunkAPI) => {
+    try {
+      const response = await fetchUserDetails();
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

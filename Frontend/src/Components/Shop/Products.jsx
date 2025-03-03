@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import ProductCard from '../Products/ProductCard';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from '../../app/features/product/productThunk';
@@ -14,7 +13,7 @@ const Products = () => {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center overflow-hidden">
       {status === "loading" ? (
         <TruckLoader />
       ) : status === "failed" ? (

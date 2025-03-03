@@ -3,7 +3,6 @@ import ProductCard from "../Main/AllProducts"
 
 const Shop = () => {
     return (
-        // <Products/>
         <ProductCard/>
     )
 }

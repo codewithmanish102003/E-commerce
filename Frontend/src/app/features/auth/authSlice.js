@@ -1,6 +1,5 @@
-// filepath: /d:/E-commerce/Frontend/src/app/features/auth/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, logoutThunk, registerUserThunk } from "./authThunk";
+import { loginThunk, logoutThunk, registerUserThunk, fetchUserDetailsThunk } from "./authThunk";
 
 const token = localStorage.getItem("token");
 
@@ -53,6 +52,17 @@ const authSlice = createSlice({
         state.status = "succeeded";
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(fetchUserDetailsThunk.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.isLoggedIn = true;
+        state.username = action.payload.fullname;
+        state.email = action.payload.email;
+        state.role = action.payload.role;
+      })
+      .addCase(fetchUserDetailsThunk.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

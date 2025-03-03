@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchProducts} from "./productThunk";
+import { fetchProducts,createProductThunk} from "./productThunk";
+
 
 const initialState = {
   products: [],
@@ -23,7 +24,10 @@ const productSlice = createSlice({
       .addCase(fetchProducts.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
-      });
+      })
+      .addCase(createProductThunk.fulfilled, (state, action) => {
+        state.status = "succeeded";
+      })
   },
 });
 
