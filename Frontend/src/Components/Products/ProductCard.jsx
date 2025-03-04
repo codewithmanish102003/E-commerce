@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Products from "../Shop/Products";
 import style from "./ProductCard.module.css";
+import { CartListData } from "../../Store/cart-list-store";
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -8,15 +9,12 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-const addToCart=(product)=>{
-  // const [carts,setCart] = useState([])
-  // setCart(...carts,product)
-  console.log("Cart  Called")
-  
-}
 const ProductCard = ({ product }) => {
+const { addToCart } = useContext(CartListData)
+
   const discountedPrice = product.price - product.discount;
   // console.log("I am RUnning")
+
   return (
     <div
       className={`flex flex-row gap-5 w-[95vw] h-50 rounded-lg overflow-hidden ${style.cardColor}`}
@@ -59,9 +57,12 @@ const ProductCard = ({ product }) => {
           voluptatem nemo delectus dicta illo?
         </p>
       </div>
-        <button class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded" onClick={addToCart(product)}>
-          Add To Cart
-        </button>
+      <button
+        className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+        onClick={(event) => addToCart(product)}
+      >
+        Add To Cart
+      </button>
     </div>
   );
 };
