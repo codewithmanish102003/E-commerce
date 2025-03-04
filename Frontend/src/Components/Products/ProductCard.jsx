@@ -8,15 +8,15 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
+const addToCart=(product)=>{
+  // const [carts,setCart] = useState([])
+  // setCart(...carts,product)
+  console.log("Cart  Called")
+  
+}
 const ProductCard = ({ product }) => {
   const discountedPrice = product.price - product.discount;
-  
-  const addToCart=(product)=>{
-    // const [carts,setCart] = useState([])
-    // setCart(...carts,product)
-    console.log("Cart  Called")
-    
-  }
+  // console.log("I am RUnning")
   return (
     <div
       className={`flex flex-row gap-5 w-[95vw] h-50 rounded-lg overflow-hidden ${style.cardColor}`}

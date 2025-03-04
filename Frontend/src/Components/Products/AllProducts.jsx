@@ -13,7 +13,7 @@ const ProductCard = ({ title, price, imageUrl, description }) => {
         <div className="px-6 pt-2 pb-4 flex justify-between items-center">
           <span className="text-lg font-semibold text-green-600">${price}</span>
           <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-full transition-colors duration-200">
-            Add to Cart
+            Add to 
           </button>
         </div>
       </div>
