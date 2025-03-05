@@ -3,7 +3,7 @@ const router = express.Router();
 const ownerModel = require('../models/owners_model');
 const upload = require('../config/multer_config');
 const productModel = require('../models/product_model');
-const isLoggedInUser= require('../middlewares/isLoggedInUser');
+const isLoggedInUser = require('../middlewares/isLoggedInUser');
 
 router.get('/', async (req, res) => { 
     try {
@@ -19,36 +19,39 @@ router.get('/', async (req, res) => {
         res.status(500).json({ error: "Something went wrong" });
     }
 });
-router.post('/create', isLoggedInUser , upload.single('image'), async (req, res) => {
-    console.log("hitted upload");
+
+router.post('/create', isLoggedInUser, upload.single('image'), async (req, res) => {
+    console.log("create product");
     
     try {
-        let { name, price, discount, bgcolor, panelcolor, textcolor } = req.body;
-
-        // Extract the owner ID from the logged-in user
+        const { name, price, discount, bgcolor, panelcolor, textcolor, description } = req.body;
         const ownerId = req.user._id;
+        const image = req.file ? req.file.buffer : null;
 
-        // Get the uploaded image file
-        const image = req.file ? req.file.buffer : null; // Store the image buffer
+        if (!image) {
+            return res.status(400).json({ error: "Image is required" });
+        }
 
-        let product = await productModel.create({
+        const product = await productModel.create({
             name,
             price,
             discount,
             bgcolor,
             panelcolor,
             textcolor,
+            description,
             owner: ownerId,
-            image, // Add the image field
+            image,
         });
 
-         // Update the owner's products array
-         await ownerModel.findByIdAndUpdate(ownerId, {
+        await ownerModel.findByIdAndUpdate(ownerId, {
             $push: { products: product._id }
         });
 
+        res.status(201).json({ message: "Product created successfully", product });
     } catch (error) {
-        res.status(500).send(error.message);
+        console.error("Error creating product:", error);
+        res.status(500).json({ error: error.message });
     }
 });
 

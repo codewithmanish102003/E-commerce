@@ -1,4 +1,3 @@
-// models/product_model.js
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
@@ -22,10 +21,16 @@ const productSchema = new mongoose.Schema({
     },
     image: {
         type: Buffer,
+        required: true,
     },
     bgcolor: {
         type: String,
-        required: true,
+    },
+    panelcolor: {
+        type: String,  
+    },
+    textcolor: {
+        type: String,  
     },
     description:{
         type: String,

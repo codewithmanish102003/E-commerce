@@ -11,7 +11,7 @@ const Profile = () => {
       <div className="rounded-lg p-6 flex flex-col justify-center items-center">
         <div>
           <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
-            No Image
+            <input type="file" name="image" id="image" className='w-32 h-32 rounded-full flex items-center justify-center' />
           </div>
         </div>
         <p><strong>Username : </strong>{isLoggedIn ? username : <Link to="/login">plaese login</Link>}</p>

@@ -11,6 +11,7 @@ const NavigationBar = () => {
     const dropdownRef = useRef(null);
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
     const username = useSelector((state) => state.auth.username);
+    const role = useSelector((state) => state.auth.role);
     
     const dispatch = useDispatch();
     
@@ -74,14 +75,22 @@ const NavigationBar = () => {
 
                     {/* Desktop Navigation */}
                     <div className="hidden sm:flex sm:items-center sm:gap-4">
-                        <Link to="/products" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2">
-                         <ShoppingBag className="h-4 w-4" />
-                            Product
-                        </Link>
-                        <Link to="/cart" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2">
-                            <ShoppingCart className="h-4 w-4" />
-                            Cart
-                        </Link>
+                        {role !== 'owner' && (
+                            <>
+                                <Link to="/" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2">
+                                    <HomeIcon className="h-4 w-4" />
+                                    Home
+                                </Link>
+                                <Link to="/products" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2">
+                                    <ShoppingBag className="h-4 w-4" />
+                                    Product
+                                </Link>
+                                <Link to="/cart" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2">
+                                    <ShoppingCart className="h-4 w-4" />
+                                    Cart
+                                </Link>
+                            </>
+                        )}
                         <div 
                             className="relative"
                             onMouseEnter={handleMouseEnter}
@@ -130,20 +139,24 @@ const NavigationBar = () => {
                                 />
                             </div>
                         </div>
-                        <Link to="/" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
-                        <HomeIcon className="h-4 w-4" />
-                            Home
-                        </Link>
-                        <Link to="/products" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
-                         <ShoppingBag className="h-4 w-4" />
-                            Product
-                        </Link>
-                        <Link to="/cart" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
-                         <ShoppingCart className="h-4 w-4" />
-                            Cart
-                        </Link>
-                        <Link to="/profile" className="text-gray-900 hover:bg-gray-700 hover:text-white  px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
-                         <User className="h-4 w-4" />
+                        {role !== 'owner' && (
+                            <>
+                                <Link to="/" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
+                                    <HomeIcon className="h-4 w-4" />
+                                    Home
+                                </Link>
+                                <Link to="/products" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
+                                    <ShoppingBag className="h-4 w-4" />
+                                    Product
+                                </Link>
+                                <Link to="/cart" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
+                                    <ShoppingCart className="h-4 w-4" />
+                                    Cart
+                                </Link>
+                            </>
+                        )}
+                        <Link to={role === 'owner' ? "/owner" : "/profile"} className="text-gray-900 hover:bg-gray-700 hover:text-white  px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
+                            <User className="h-4 w-4" />
                             Profile
                         </Link>
                         {isLoggedIn ? (

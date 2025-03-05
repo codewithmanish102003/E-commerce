@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchAllProducts, fetchProductById ,createProduct } from "../../../services/api/productApi";
+import { fetchAllProducts, fetchProductById, createProduct } from "../../../services/api/productApi";
 
-// **Fetch all products**
+// Fetch all products
 export const fetchProducts = createAsyncThunk(
   "products/fetchAll",
   async (_, thunkAPI) => {
@@ -14,7 +14,7 @@ export const fetchProducts = createAsyncThunk(
   }
 );
 
-// **Fetch single product by ID**
+// Fetch single product by ID
 export const fetchProductByIdThunk = createAsyncThunk(
   "products/fetchById",
   async (productId, thunkAPI) => {
@@ -27,20 +27,21 @@ export const fetchProductByIdThunk = createAsyncThunk(
   }
 );
 
+// Create a new product
 export const createProductThunk = createAsyncThunk(
   "products/create",
   async (product, thunkAPI) => {
     try {
-      const response = await createProduct(product)
+      const response = await createProduct(product);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
-)
+);
 
 export default {
   fetchProducts,
   fetchProductByIdThunk,
-  createProductThunk
+  createProductThunk,
 };

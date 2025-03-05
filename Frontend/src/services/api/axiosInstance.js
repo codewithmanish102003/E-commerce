@@ -1,4 +1,3 @@
-// filepath: /d:/E-commerce/Frontend/src/services/api/axiosInstance.js
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -6,11 +5,13 @@ const axiosInstance = axios.create({
   timeout: 10000, // Timeout after 10 seconds
   headers: {
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "multipart/form-data",
   },
-  withCredentials: true, // Add this line
+  withCredentials: true,
 });
 
-// Add a request interceptor (e.g., attach auth token)
+// Add a request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -24,7 +25,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Add a response interceptor (e.g., handle errors globally)
+// Add a response interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

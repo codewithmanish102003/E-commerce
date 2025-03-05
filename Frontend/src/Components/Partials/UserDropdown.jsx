@@ -7,6 +7,8 @@ import { User, LogOut, Star, Bell, Box } from "lucide-react";
 export default function UserDropdown({ setIsDropdownOpen }) {
     const dropdownRef = useRef(null);
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    const username = useSelector((state) => state.auth.username);
+    const role = useSelector((state) => state.auth.role);
     const dispatch = useDispatch();
 
     // Close dropdown when clicking outside
@@ -37,9 +39,16 @@ export default function UserDropdown({ setIsDropdownOpen }) {
                         </div>
                     </div>
                 )}
-                <Link to="/profile">
-                    <DropdownItem icon={<User />} text="My Profile" />
-                </Link>
+                {isLoggedIn && role === "owner" && (
+                    <Link to="/owner" className="w-full">
+                        <DropdownItem icon={<User />} text="Profile" />
+                    </Link>
+                )}
+                {isLoggedIn && role === "user" && (
+                    <Link to="/profile">
+                        <DropdownItem icon={<User />} text="Profile" />
+                    </Link>
+                )}
                 <DropdownItem icon={<Star className="text-yellow-500" />} text="SuperCoin Zone" />
                 <DropdownItem icon={<Box />} text="Orders" />
                 <DropdownItem icon={<Bell />} text="Notifications" />
