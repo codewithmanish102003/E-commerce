@@ -1,8 +1,9 @@
-<<<<<<< HEAD
 import { useContext, useState } from "react";
 import Products from "../Shop/Products";
 import style from "./ProductCard.module.css";
 import { CartListData } from "../../Store/cart-list-store";
+import { Star, StarHalf } from "lucide-react";
+
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -11,27 +12,8 @@ const formatCurrency = (amount) => {
 };
 
 const ProductCard = ({ product }) => {
-const { addToCart } = useContext(CartListData)
-=======
-import { Star, StarHalf } from "lucide-react";
-
-const formatCurrency = (amount) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-    }).format(amount)
-  }
-  
-  const ProductCard = ({ product }) => {
-    const discountedPrice = product.price - product.discount
-  
-    return (
-      <div className="flex flex-row gap-5 w-[95vw] h-50 rounded-lg overflow-hidden">
-        <div className="w-1/4 relative border-r-2 border-gray-400 flex items-center justify-center">
->>>>>>> cf033f53bf130d8818d1957bf3c5f7be2817a5f0
-
+  const { addToCart } = useContext(CartListData);
   const discountedPrice = product.price - product.discount;
-  // console.log("I am RUnning")
 
   return (
     <div
@@ -49,33 +31,6 @@ const formatCurrency = (amount) => {
             No Image
           </div>
         )}
-<<<<<<< HEAD
-=======
-        </div>
-        <div className="w-3/4 px-4 py-4 h-20" >
-          <div className="font-bold text-sm mb-2">{product.name}</div>
-          <p className="text-base mb-2">
-            {product.discount > 0 ? (
-              <>
-                <span className="line-through">{formatCurrency(product.price)}</span>
-                <span className="ml-2 text-sm font-bold">{formatCurrency(discountedPrice)}</span>
-                <span className="ml-2 text-sm bg-red-500 text-white px-2 py-1 rounded">{product.discount}Rs/ OFF</span>
-              </>
-            ) : (
-              <span className="font-bold">{formatCurrency(product.price)}</span>
-            )}
-          </p>
-          <div><strong>Description : </strong></div>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti totam quis qui autem tempora optio nisi sint, corporis quo aliquam voluptatem nemo delectus dicta illo?
-          </p>
-          <div className="flex items-center gap-2">
-            <strong>Ratings : </strong><Star size={20} className="text-yellow-500" />
-            <Star size={20} className="text-yellow-500" />
-            <Star size={20} className="text-yellow-500" />
-            <StarHalf size={20} className="text-yellow-500" />
-          </div>
-        </div>
->>>>>>> cf033f53bf130d8818d1957bf3c5f7be2817a5f0
       </div>
       <div className="w-3/4 px-4 py-4 h-20">
         <div className="font-bold text-sm mb-2">{product.name}</div>
@@ -96,11 +51,19 @@ const formatCurrency = (amount) => {
             <span className="font-bold">{formatCurrency(product.price)}</span>
           )}
         </p>
+        <div><strong>Description : </strong></div>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti
           totam quis qui autem tempora optio nisi sint, corporis quo aliquam
           voluptatem nemo delectus dicta illo?
         </p>
+        <div className="flex items-center gap-2">
+          <strong>Ratings : </strong>
+          <Star size={20} className="text-yellow-500" />
+          <Star size={20} className="text-yellow-500" />
+          <Star size={20} className="text-yellow-500" />
+          <StarHalf size={20} className="text-yellow-500" />
+        </div>
       </div>
       <button
         className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"

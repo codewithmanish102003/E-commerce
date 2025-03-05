@@ -14,6 +14,7 @@ import Footer from './Components/Partials/Footer';
 import ProductDetails from './Components/Products/ProductDetails';
 import Owner from './Components/Dashboard/Owner';
 import './App.css';
+import { CartListData } from './Store/cart-list-store';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
+    <CartListData >
     <Router>
       <NavigationBar />
       <div className='w-full h-3 bg-gray-100'></div>
@@ -51,6 +53,7 @@ const App = () => {
       </Routes>
       <Footer />
     </Router>
+    </CartListData>
   );
 };
 
