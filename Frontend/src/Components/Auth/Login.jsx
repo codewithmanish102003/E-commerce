@@ -1,16 +1,15 @@
-<<<<<<< HEAD
+
 import  { useState,useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import {loginThunk} from "../../app/features/auth/authThunk"
 import {useDispatch} from "react-redux"
-=======
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginThunk } from "../../app/features/auth/authThunk";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
->>>>>>> cf033f53bf130d8818d1957bf3c5f7be2817a5f0
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -51,11 +50,8 @@ const Login = () => {
 
     try {
       const response = await dispatch(loginThunk(formData)).unwrap();
-<<<<<<< HEAD
       console.log("Login successful:", response);
       console.log("Data submission successful")
-=======
->>>>>>> cf033f53bf130d8818d1957bf3c5f7be2817a5f0
       setSuccess(response.message);
       if (response.role === "owner") {
         navigate("/owner", { state: { success: response.message } });
