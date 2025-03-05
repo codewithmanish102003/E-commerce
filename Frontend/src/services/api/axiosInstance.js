@@ -4,10 +4,6 @@ const axiosInstance = axios.create({
   baseURL: "http://localhost:3000/api",
   timeout: 10000, // Timeout after 10 seconds
   headers: {
-<<<<<<< HEAD
-   
-=======
->>>>>>> cf033f53bf130d8818d1957bf3c5f7be2817a5f0
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "multipart/form-data",

@@ -7,7 +7,7 @@ export const CartListData = createContext({
 });
 
 const deleteFromCart= () => {}
-const CartListProider = ({ children }) => {
+const CartListPrvoider = ({ children }) => {
   let [cartList, setCartList] = useState([]);
   function addToCart(product) {
     const newCart = [...cartList, product];
@@ -20,4 +20,4 @@ const CartListProider = ({ children }) => {
     </CartListData.Provider>
     )
 };
-export default CartListProider;
+export default CartListPrvoider;
