@@ -1,14 +1,15 @@
 const express = require('express');
-const router = express.Router()
-const { registerUser, loginUser, logout } = require("../controllers/authController")
+const router = express.Router();
+const { registerUser, loginUser, logout } = require("../controllers/authController");
+const isLoggedInUser = require('../middlewares/isLoggedInUser');
 
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+router.post('/logout', logout);
 
+//endpoint to fetch user details
+router.get('/me', isLoggedInUser, (req, res) => {
+    res.json(req.user);
+});
 
-router.post('/register', registerUser)
-
-router.post('/login', loginUser)
-
-router.post('/logout', logout)
-
-
-module.exports = router;  //exporting the router to use in other files.
+module.exports = router;

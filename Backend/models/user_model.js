@@ -12,13 +12,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    role:{
-        type:String,
-        default:"user"
+    role: {
+        type: String,
+        default: "user"
     },
     password: {
         type: String,
         required: true,
+    },
+    image: {
+        type: Buffer
     },
     cart: [{
         type: mongoose.Schema.Types.ObjectId,

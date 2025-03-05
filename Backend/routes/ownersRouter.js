@@ -3,14 +3,9 @@ const router=express.Router()
 const ownerModel=require("../models/owners_model")
 const productModel = require("../models/product_model");
 const isLoggedInUser=require("../middlewares/isLoggedInUser")
-const userModel = require("../models/user_model");
 const {registerAdmin}=require("../controllers/authController")
 
-console.log(process.env.NODE_ENV);
-
 router.post('/register',registerAdmin)
-
-
 if (process.env.NODE_ENV==="development") {
     router.post("/create",async function(req,res){
        let owners=await ownerModel.find();

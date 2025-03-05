@@ -20,14 +20,5 @@ const ProductCard = ({ title, price, imageUrl, description }) => {
     );
   };
   
-  // Example usage:
-  /* 
-  <ProductCard 
-    title="Premium Headphones" 
-    price={99.99} 
-    imageUrl="https://example.com/headphones.jpg"
-    description="High-quality wireless headphones with noise cancellation"
-  />
-  */
   
   export default ProductCard;

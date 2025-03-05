@@ -8,19 +8,27 @@ export const registerUser = async (userData) => {
     const response = await axios.post(`${API_URL}/user/register`, userData);
     return response.data;
   } catch (error) {
-    console.error('Error registering user:', error);
-    throw error;
+    console.log('Error registering user:', error.response.data.error);
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.error);
+    } else {
+      throw new Error(error.message);
+    }
   }
 };
 
 // Login user
 export const loginUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/user/login`, userData);
+    const response = await axios.post(`${API_URL}/user/login`, userData, { withCredentials: true });
     return response.data;
   } catch (error) {
-    console.error('Error logging in user:', error);
-    throw error;
+    console.log('Error logging in user:', error.response.data.error);
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data.error || 'Login failed. Please try again.');
+    } else {
+      throw new Error(error.message || 'Login failed. Please try again.');
+    }
   }
 };
 
@@ -32,6 +40,17 @@ export const logoutUser = async () => {
     return response.data;
   } catch (error) {
     console.error('Error logging out user:', error);
+    throw error;
+  }
+};
+
+// Fetch user details
+export const fetchUserDetails = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/user/me`, { withCredentials: true });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user details:', error);
     throw error;
   }
 };
@@ -49,4 +68,3 @@ export const handleLogin = async (email, password) => {
     throw error;
   }
 };
-

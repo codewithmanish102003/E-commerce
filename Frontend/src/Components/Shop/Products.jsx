@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import ProductCard from '../Products/ProductCard';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from '../../app/features/product/productThunk';
@@ -14,7 +13,7 @@ const Products = () => {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center overflow-hidden">
       {status === "loading" ? (
         <TruckLoader />
       ) : status === "failed" ? (
@@ -26,9 +25,13 @@ const Products = () => {
           <div className="flex flex-col gap-4 flex-wrap justify-center items-center">
             {products.map((product) => (
               <React.Fragment key={product._id}>
+<<<<<<< HEAD
                 {/* <Link to="/details"> */}
                   <ProductCard product={product} />
                 {/* </Link> */}
+=======
+                  <ProductCard product={product} />
+>>>>>>> cf033f53bf130d8818d1957bf3c5f7be2817a5f0
                 <div className='w-full bg-black h-[1px]'></div>
               </React.Fragment>
             ))}

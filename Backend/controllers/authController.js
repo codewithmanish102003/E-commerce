@@ -6,14 +6,13 @@ const jwt = require('jsonwebtoken');
 const { generateToken } = require('../utils/generateToken');
 
 module.exports.registerUser = async (req, res) => {
-    console.log("route /registerUser hitted");
+    console.log("register")
     try {
         let { email, fullname, password } = req.body;
-
-        let user = await userModel.findOne({ email: email });
+        let user = await userModel.findOne({ email });
         if (user) {
-            req.flash('error_msg', 'User already exists');
-            return res.status(400).json({ error: 'User already exists', flash: req.flash() });
+            req.flash('error_msg', 'Email Is Already Registered');
+            return res.status(400).json({ error: 'Email Is Already Registered', flash: req.flash() });
         }
 
         bcrypt.genSalt(10, (err, salt) => {
@@ -39,11 +38,10 @@ module.exports.registerUser = async (req, res) => {
 };
 
 module.exports.registerAdmin = async (req, res) => {
-    console.log("route /registerAdmin hitted");
     try {
-        let { email, fullname, password, picture, gstno, contact } = req.body;
+        let { email, fullname, password, image, gstno, contact } = req.body;
 
-        let owner = await ownerModel.findOne({ email: email, contact:contact });
+        let owner = await ownerModel.findOne({ email });
         if (owner) {
             req.flash('error_msg', 'Owner already exists');
             return res.status(400).json({ error: 'Owner already exists', flash: req.flash() });
@@ -57,7 +55,7 @@ module.exports.registerAdmin = async (req, res) => {
                     email,
                     password: hash,
                     fullname,
-                    picture,
+                    image,
                     gstno,
                     contact
                 });
@@ -75,32 +73,31 @@ module.exports.registerAdmin = async (req, res) => {
 };
 
 module.exports.loginUser = async (req, res) => {
-    console.log("route /loginUser hitted");
-
     let { email, password } = req.body;
-
-    let user = await userModel.findOne({ email: email });
+    console.log("route login")
+    let user = await userModel.findOne({ email });
     if (!user) {
-        let owner = await ownerModel.findOne({ email: email });
+        let owner = await ownerModel.findOne({ email });
         if (owner) {
             bcrypt.compare(password, owner.password, async (err, result) => {
+                console.log(result);
+                
                 if (result) {
                     let role = owner.role;
-                    console.log("role", role);
                     let token = generateToken(owner);
                     res.cookie("token", token, { httpOnly: true, sameSite: 'None', secure: true });
                     const products = await productModel.find({ owner: owner._id });
                     
                     req.flash('success_msg', 'Login successful');
-                    return res.status(200).json({ message: 'Login successful', owner,token, products, role, flash: req.flash() });
+                    return res.status(200).json({ message: 'Login successful', owner, token, products, role, flash: req.flash() });
                 } else {
                     req.flash('error_msg', 'Invalid credentials');
                     return res.status(401).json({ error: 'Invalid credentials', flash: req.flash() });
                 }
             });
         } else {
-            req.flash('error_msg', 'User not found');
-            return res.status(404).json({ error: 'User not found', flash: req.flash() });
+            req.flash('error_msg', 'Email or password is incorrect');
+            return res.status(404).json({ error: 'Email or password is incorrect', flash: req.flash() });
         }
     } else {
         bcrypt.compare(password, user.password, (err, result) => {
@@ -108,7 +105,7 @@ module.exports.loginUser = async (req, res) => {
                 let token = generateToken(user);
                 res.cookie("token", token, { httpOnly: true, sameSite: 'None', secure: true });
                 req.flash('success_msg', 'Login successful');
-                return res.status(200).json({ message: 'Login successful',user, token, flash: req.flash() });
+                return res.status(200).json({ message: 'Login successful', user,token, flash: req.flash() });
             } else {
                 req.flash('error_msg', 'Invalid credentials');
                 return res.status(401).json({ error: 'Invalid credentials', flash: req.flash() });
@@ -118,7 +115,6 @@ module.exports.loginUser = async (req, res) => {
 };
 
 module.exports.logout = (req, res) => {
-    console.log("route /logout hitted");
     res.clearCookie("token");
     req.flash('success_msg', 'Logged out successfully');
     res.status(200).json({ message: 'Logged out successfully', flash: req.flash() });
