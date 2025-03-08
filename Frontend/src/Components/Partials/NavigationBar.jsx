@@ -42,7 +42,7 @@ const NavigationBar = () => {
     }, []);
 
     return (
-        <nav className="shadow-lg bg-white justify-around font-['helvetica_now_display']">
+        <nav className="shadow-lg bg-white justify-around font-['helvetica_now_display'] fixed w-full z-10">
             <div className="max-w-full px-2 sm:px-6 lg:px-8">
                 <div className="relative flex items-center justify-between h-16 gap-4">
                     <div className="flex-shrink-0">

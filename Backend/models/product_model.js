@@ -14,11 +14,6 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "owner",
-        required: true,
-    },
     image: {
         type: Buffer,
         required: true,
@@ -32,6 +27,11 @@ const productSchema = new mongoose.Schema({
     textcolor: {
         type: String,  
     },
+    quantity: {
+        type: Number,
+        required: true,
+        default:1,
+    },
     description:{
         type: String,
         required: true,
@@ -39,6 +39,11 @@ const productSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "owner",
+        required: true,
     },
 });
 

@@ -14,7 +14,7 @@ import Footer from './Components/Partials/Footer';
 import ProductDetails from './Components/Products/ProductDetails';
 import Owner from './Components/Dashboard/Owner';
 import './App.css';
-import CartListPrvoider, { CartListData } from './Store/cart-list-store';
+
 
 const App = () => {
   const dispatch = useDispatch();
@@ -27,10 +27,10 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <CartListPrvoider>
+
     <Router>
-      <NavigationBar />
-      <div className='w-full h-3 bg-gray-100'></div>
+      <NavigationBar className="" />
+      <div className='w-full h-3 bg-gray-100 mb-15'></div>
       <Routes className="bg-gray-50">
         {role !== 'owner' && (
           <>
@@ -53,7 +53,7 @@ const App = () => {
       </Routes>
       <Footer />
     </Router>
-    </CartListPrvoider>
+
   );
 };
 

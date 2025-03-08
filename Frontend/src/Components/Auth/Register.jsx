@@ -37,10 +37,10 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    if(password && e.target.password !== e.target.confirm-password){
-      setError("Passwords do not match");
-      return;
-    }else{
+    // if(password && e.target.password !== e.target.confirm-password){
+    //   setError("Passwords do not match");
+    //   return;
+    // }else{
     try {
       const response = await dispatch(registerUserThunk(formData)).unwrap();
       console.log("Registration successful:", response.message);
@@ -48,7 +48,7 @@ const Register = () => {
     } catch (error) {
       setError(error || "Registration failed. Please try again.");
     }
-  }
+  // }
   };
 
   return (

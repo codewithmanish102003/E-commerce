@@ -6,8 +6,6 @@ const isLoggedInUser = require('../middlewares/isLoggedInUser');
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', logout);
-
-//endpoint to fetch user details
 router.get('/me', isLoggedInUser, (req, res) => {
     res.json(req.user);
 });

@@ -11,13 +11,13 @@ require('dotenv').config();
 const ownersRouter = require('./routes/ownersRouter');
 const productRouter = require('./routes/productsRouter');
 const userRouter = require('./routes/userRouter');
-const indexRouter = require('./routes/indexRouter');
+const cartRouter = require('./routes/cartRouter');
 
 const db = require('./config/mongoose_connection');
 
 app.use(flash());
 app.use(cors({
-    origin: 'http://localhost:5173', // Adjust this to your frontend URL
+    origin: 'http://localhost:5173',
     credentials: true,
 }));
 app.use(express.json());
@@ -27,14 +27,14 @@ app.use(
     expressSession({
         resave: false,
         saveUninitialized: false,
-        secret: process.env.EXPRESS_SESSION_SECRET || 'default_secret',
+        secret: process.env.EXPRESS_SESSION_SECRET || 'secret',
     })
 );
 
 app.use('/api/user', userRouter);
 app.use('/api/products', productRouter);
 app.use('/api/owners', ownersRouter);
-app.use('/', indexRouter);
+app.use('/api/cart', cartRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
