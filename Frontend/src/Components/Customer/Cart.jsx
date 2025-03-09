@@ -68,7 +68,7 @@ const Cart = () => {
         <p>Your cart is empty.</p>
       ) : (
         <div>
-          <div className='w-[20] flex gap-4 '>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5'>
             {cart.cart.map((cartItem, index) => {
               const discountedPrice = cartItem.price - (cartItem.price * (cartItem.discount / 100));
               return (

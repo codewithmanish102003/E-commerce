@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {useLocation } from "react-router-dom";
 import Shop from '../Shop/Shop'
 import Banner from '../Shop/Banner'
+import { motion } from 'framer-motion';
 
 const Home = () => {
      const location = useLocation();
@@ -20,7 +21,10 @@ const Home = () => {
         }, [location.state]);
     return (
         <>
-            <div>
+            <motion.div
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay:0.2 }}>
             {success && (
                 <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4" role="alert">
                     <span className="block sm:inline">{success}</span>
@@ -28,7 +32,7 @@ const Home = () => {
             )}
                 <Banner />
                 <Shop />
-            </div>
+            </motion.div>
 
         </>
     )

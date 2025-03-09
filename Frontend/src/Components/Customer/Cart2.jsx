@@ -9,8 +9,19 @@ const Cart = () => {
   const { cart, status, error } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    dispatch(fetchCartProductsThunk());
-  }, [dispatch]);
+    console.log('Cart component mounted');
+    fetchCartProducts();
+  }, []);
+
+  const fetchCartProducts = async () => {
+    try {
+      const response = await dispatch(fetchCartProductsThunk());
+      console.log('Cart data fetched:', response);
+    } catch (error) {
+      console.error('Error fetching cart data:', error);
+    }
+  };
+
 
   const handleQuantityChange = (productId, newQuantity) => {
     if (newQuantity >= 1) {
@@ -26,7 +37,7 @@ const Cart = () => {
     console.log('Removing product:', productId);
   };
 
- const calculateDiscountedPrice = (price, discount) => {
+  const calculateDiscountedPrice = (price, discount) => {
     return price - (price * (discount / 100));
   };
 
@@ -45,7 +56,8 @@ const Cart = () => {
     );
   }
 
-  if (error) {
+  if (status === error) {
+    console.log(error)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -63,7 +75,7 @@ const Cart = () => {
         <FaShoppingBag className="text-gray-400 text-6xl" />
         <h2 className="text-2xl font-semibold text-gray-600">Your cart is empty</h2>
         <p className="text-gray-500">Add some items to get started!</p>
-        <button 
+        <button
           className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
           onClick={() => window.history.back()}
         >
@@ -74,18 +86,19 @@ const Cart = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-full mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
 
-<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <div className="space-y-4">
             {cart.map((item, index) => {
+              { console.log(item) }
               const discountedPrice = calculateDiscountedPrice(item.price, item.discount);
-              
+
               return (
                 <motion.div
-                  key={item.id}
+                  key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -101,7 +114,7 @@ const Cart = () => {
                     ) : (
                       <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
 
- <span className="text-gray-400">No image</span>
+                        <span className="text-gray-400">No image</span>
                       </div>
                     )}
                     {item.discount > 0 && (
@@ -114,7 +127,7 @@ const Cart = () => {
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold">{item.name}</h3>
                     <p className="text-gray-600 text-sm mt-1">{item.desc}</p>
-                    
+
                     <div className="mt-4 flex flex-wrap items-center gap-4">
                       <div className="flex items-center space-x-2">
                         <button
@@ -123,7 +136,7 @@ const Cart = () => {
                         >
                           <FaMinus className="text-gray-600" />
                         </button>
- <span className="w-8 text-center">{item.tempQuantity || 1}</span>
+                        <span className="w-8 text-center">{item.tempQuantity || 1}</span>
                         <button
                           onClick={() => handleQuantityChange(item.id, (item.tempQuantity || 1) + 1)}
                           className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
@@ -146,7 +159,7 @@ const Cart = () => {
                     </div>
                   </div>
                 </motion.div>
-  );
+              );
             })}
           </div>
         </div>
@@ -154,7 +167,7 @@ const Cart = () => {
         <div className="lg:col-span-1">
           <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
             <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-            
+
             <div className="space-y-3">
               <div className="flex justify-between text-gray-600">
                 <span>Subtotal</span>
@@ -172,7 +185,7 @@ const Cart = () => {
                 <p className="text-gray-500 text-sm mt-1">Including GST</p>
               </div>
             </div>
- <button className="w-full mt-6 bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2">
+            <button className="w-full mt-6 bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2">
               <span>Proceed to Checkout</span>
             </button>
           </div>

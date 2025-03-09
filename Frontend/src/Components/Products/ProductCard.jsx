@@ -91,12 +91,17 @@ const ProductCard = ({ product }) => {
         </div>
 
         {/* Add to cart button */}
-        <div className="mt-auto">
+        <div className="mt-auto flex gap-4 ">
           <button
             className="w-full sm:w-auto bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded transition-colors"
             onClick={handleAddToCart}
           >
             Add To Cart
+          </button>
+          <button
+            className="w-full sm:w-auto bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded transition-colors"
+          >
+            Purchase Now
           </button>
         </div>
       </div>
