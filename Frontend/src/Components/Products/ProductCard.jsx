@@ -1,8 +1,8 @@
 import { Star, StarHalf } from "lucide-react"
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { addToCart } from "../../services/api/cartApi"
-import { useNavigate } from "react-router-dom"
+import { addToCartThunk } from "../../app/features/cart/cartThunk"
+import { useSelector } from "react-redux"
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("en-IN", {
@@ -12,19 +12,41 @@ const formatCurrency = (amount) => {
 }
 
 const ProductCard = ({ product }) => {
+  const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  useEffect(() => {
+      if (success || error) {
+        const timer = setTimeout(() => {
+          setSuccess("");
+          setError("");
+        }, 5000); // 5 seconds
+  
+        return () => clearTimeout(timer);
+      }
+    }, [success, error]);
 
   const handleAddToCart = async (e) => {
     e.preventDefault();
+    setSuccess("");
+    setError("");
+    if (!isLoggedIn) {
+      setError("You must be logged in");
+    }else{
     try {
-      console.log("Add to cart");
-      dispatch(addToCart(product));
-      navigate("/cart");
+      const response=await dispatch(addToCartThunk(product));
+      console.log(response)
+      if (response.payload.message) {
+      setSuccess(response.payload.message)
+      }else{
+        setError(response.payload.error)
+      }
     } catch (err) {
       setError(err?.message || "Failed to add to cart");
     }
+  }
   };
   const discount = (product.discount / 100) * product.price
   const discountedPrice = product.price - discount
@@ -36,6 +58,12 @@ const ProductCard = ({ product }) => {
         <span className="block sm:inline">{error}</span>
       </div>
     )}
+    {success && (
+      <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <span className="block sm:inline">{success}</span>
+      </div>
+    )}
+    
     <div className="flex flex-col sm:flex-row w-full max-w- rounded-lg overflow-hidden border border-gray-200 shadow-md bg-white">
       {/* Image container - full width on mobile, 1/4 on tablet+ */}
       <div className="w-full sm:w-1/3 md:w-1/4 relative border-b sm:border-b-0 sm:border-r border-gray-200 flex items-center justify-center p-4">

@@ -2,11 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice";
 import productReducer from "./features/product/productSlice";
 import cartReducer from "./features/cart/cartSlice";
-
-const customMiddleware = store => next => action => {
-  console.log("Middleware: ", action);
-  return next(action);
-};
+const initaialState={
+  auth:{
+    user:null,
+    isAuthenticated:false,
+    loading:false,
+    error:null,
+  }
+}
 
 const store = configureStore({
   reducer: {
@@ -14,7 +17,7 @@ const store = configureStore({
     products: productReducer,
     cart: cartReducer,
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(customMiddleware),
+  preloadedState:initaialState,
 });
 
 export default store;

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCartProductsThunk } from "./cartThunk";
+import { fetchCartProductsThunk, removeProductThunk, addToCartThunk, updateQuantityThunk } from "./cartThunk";
 
 const initialState = {
   status: 'active',
@@ -19,12 +19,48 @@ const cartSlice = createSlice({
         state.status = 'succeeded';
         state.cart = action.payload.cart;
         state.total = action.payload.total;
-        console.log('Cart state after update:', state);
       })
       .addCase(fetchCartProductsThunk.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload;
-      });
+      })
+      .addCase(addToCartThunk.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        const product = action.payload;
+        const existingProduct = state.cart.find(item => item._id === product._id);
+        if (existingProduct) {
+          existingProduct.quantity += 1;
+        } else {
+          state.cart.push({ ...product, quantity: 1 });
+        }
+      })
+      .addCase(addToCartThunk.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(removeProductThunk.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.cart = state.cart.filter(item => item._id !== action.payload._id);
+      })
+      .addCase(removeProductThunk.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(updateQuantityThunk.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        const product = state.cart.find(item => item._id === action.payload.productId);
+        if (product) {
+          if (action.payload.operation === 'decrease') {
+            product.quantity -= 1;
+          } else if (action.payload.operation === 'increase') {
+            product.quantity += 1;
+          }
+        }
+      })
+      .addCase(updateQuantityThunk.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
   }
 })
 

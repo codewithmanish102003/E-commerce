@@ -12,9 +12,9 @@ const NavigationBar = () => {
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
     const username = useSelector((state) => state.auth.username);
     const role = useSelector((state) => state.auth.role);
-    
+
     const dispatch = useDispatch();
-    
+
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
@@ -50,7 +50,7 @@ const NavigationBar = () => {
                             <h3 className="text-xl">💫wayCollections</h3>
                         </Link>
                     </div>
-                    
+
                     {/* Search Bar */}
                     <div className="flex-1 max-w-xl hidden sm:block">
                         <div className="relative">
@@ -65,6 +65,17 @@ const NavigationBar = () => {
 
                     {/* Mobile menu button */}
                     <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
+                        <div className="relative pl-40">
+                            <Search className="absolute pl-1 top-2.5 h-4 w-4 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search for Products, Brands and More"
+                                className="pl-6 bg-[#F0F5FF] border-none h-9 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <Link to="/cart" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2">
+                            <ShoppingCart className="h-4 w-4" />
+                        </Link>
                         <button
                             onClick={toggleMenu}
                             className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -91,7 +102,7 @@ const NavigationBar = () => {
                                 </Link>
                             </>
                         )}
-                        <div 
+                        <div
                             className="relative"
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
@@ -108,8 +119,8 @@ const NavigationBar = () => {
                             {isDropdownOpen && <UserDropdown setIsDropdownOpen={setIsDropdownOpen} />}
                         </div>
                         {isLoggedIn ? (
-                            <button 
-                                onClick={handleLogout} 
+                            <button
+                                onClick={handleLogout}
                                 className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2"
                             >
                                 <LogOut className="h-4 w-4" />
@@ -149,10 +160,10 @@ const NavigationBar = () => {
                                     <ShoppingBag className="h-4 w-4" />
                                     Product
                                 </Link>
-                                <Link to="/cart" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
+                                {/* <Link to="/cart" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
                                     <ShoppingCart className="h-4 w-4" />
                                     Cart
-                                </Link>
+                                </Link> */}
                             </>
                         )}
                         <Link to={role === 'owner' ? "/owner" : "/profile"} className="text-gray-900 hover:bg-gray-700 hover:text-white  px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
@@ -160,8 +171,8 @@ const NavigationBar = () => {
                             Profile
                         </Link>
                         {isLoggedIn ? (
-                            <button 
-                                onClick={handleLogout} 
+                            <button
+                                onClick={handleLogout}
                                 className="w-full text-left text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-mediummflex flex items-center gap-2"
                             >
                                 <LogOut className="h-4 w-4" />

@@ -76,18 +76,19 @@ module.exports.loginUser = async (req, res) => {
     let { email, password } = req.body;
     console.log("route login")
     let user = await userModel.findOne({ email });
+    let role = user.role
+    console.log(role)
     if (!user) {
         let owner = await ownerModel.findOne({ email });
         if (owner) {
             bcrypt.compare(password, owner.password, async (err, result) => {
                 console.log(result);
-                
+
                 if (result) {
                     let role = owner.role;
                     let token = generateToken(owner);
-                    res.cookie("token", token, { httpOnly: true, sameSite: 'None', secure: true });
+                    res.cookie("token", token, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 60 * 60 * 1000 }); 
                     const products = await productModel.find({ owner: owner._id });
-                    
                     req.flash('success_msg', 'Login successful');
                     return res.status(200).json({ message: 'Login successful', owner, token, products, role, flash: req.flash() });
                 } else {
@@ -105,7 +106,7 @@ module.exports.loginUser = async (req, res) => {
                 let token = generateToken(user);
                 res.cookie("token", token, { httpOnly: true, sameSite: 'None', secure: true });
                 req.flash('success_msg', 'Login successful');
-                return res.status(200).json({ message: 'Login successful', user,token, flash: req.flash() });
+                return res.status(200).json({ message: 'Login successful', user, role, token, flash: req.flash() });
             } else {
                 req.flash('error_msg', 'Invalid credentials');
                 return res.status(401).json({ error: 'Invalid credentials', flash: req.flash() });

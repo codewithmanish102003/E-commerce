@@ -9,7 +9,6 @@ const Home = () => {
         const [success, setSuccess] = useState("");
     
         useEffect(() => {
-            console.log(location.state);
             if (location.state && location.state.success) {
                 setSuccess(location.state.success);
                 const timer = setTimeout(() => {
