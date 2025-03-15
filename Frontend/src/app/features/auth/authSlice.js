@@ -7,7 +7,12 @@ const initialState = {
   isLoggedIn: !!token,
   status: "idle",
   error: null,
-  username: null,
+  firstname: null,
+  lastname: null,
+  email: null,
+  phone: null,
+  role: null,
+  gstno: null,
 };
 
 const authSlice = createSlice({
@@ -20,6 +25,7 @@ const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
+        state.token = action.payload.token;
         state.status = "succeeded";
         state.isLoggedIn = true;
         state.role = action.payload.role;
@@ -28,7 +34,9 @@ const authSlice = createSlice({
           state.email = action.payload.owner.email;
           state.gstno = action.payload.owner.gstno;
         } else {
-          state.username = action.payload.user.fullname;
+          state.firstname = action.payload.user.firstname;
+          state.lastname = action.payload.user.lastname;
+          state.phone = action.payload.user.contact;
           state.email = action.payload.user.email;
         }
       })

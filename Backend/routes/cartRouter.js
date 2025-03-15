@@ -3,10 +3,7 @@ const isLoggedInUser = require('../middlewares/isLoggedInUser');
 const userModel = require('../models/user_model');
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ message: "Welcome to the API", loggedin: false });
-});
-
+//1.Add ti cart
 router.post('/addtocart/:id', isLoggedInUser, async (req, res) => {
   try {
     let user = await userModel.findOne({ email: req.user.email });
@@ -26,26 +23,38 @@ router.post('/addtocart/:id', isLoggedInUser, async (req, res) => {
   }
 });
 
+//2.update Quantity
 router.put('/updatequantity/:id', isLoggedInUser, async (req, res) => {
   try {
-    let user = await userModel.findOne({ email: req.user.email });
-    const productIndex = user.cart.findIndex(product => product.toString() === req.params.id);
-    if (productIndex !== -1) {
-      if (req.query.operation === 'decrease') {
-        user.cart[productIndex].quantity -= 1;
-      } else if (req.query.operation === 'increase') {
-        user.cart[productIndex].quantity += 1;
-      }
-      await user.save();
-      res.status(200).json({ message: "Quantity updated successfully" });
-    } else {
-      res.status(404).json({ error: "Product not found in cart" });
-    }
+    const productId = req.params.id;
+    const operation = req.query.operation;
+    const user = await userModel.findOne({ email: req.user.email }).populate("cart").exec();
+
+    const cartIndex = user.cart.findIndex((cartItem) => cartItem.product._id.toString() === productId);
+
+if (cartIndex === -1) {
+  return res.status(404).json({ error: "Product not found in cart" });
+}
+
+const update = {};
+if (operation === 'decrease') {
+  update.$inc = { "cart.$.quantity": -1 };
+} else if (operation === 'increase') {
+  update.$inc = { "cart.$.quantity": 1 };
+}
+
+await userModel.updateOne({ email: req.user.email, "cart.product": productId }, update);
+
+// Update cart total
+const cartTotal = user.cart.reduce((total, cartItem) => total + cartItem.product.price * cartItem.quantity, 0);
+
+res.status(200).json({ message: "Quantity updated successfully", cartTotal });
   } catch (err) {
     res.status(400).json({ error: "Failed to update quantity" });
   }
 });
 
+//3.Delete from Cart
 router.delete('/removefromcart/:id', isLoggedInUser, async (req, res) => {
   try {
     let user = await userModel.findOne({ email: req.user.email });
@@ -59,6 +68,7 @@ router.delete('/removefromcart/:id', isLoggedInUser, async (req, res) => {
   }
 });
 
+//4.Fetching all Products from cart
 router.get('/cartproducts', isLoggedInUser, async (req, res) => {
   try {
     let user = await userModel.findOne({ email: req.user.email }).populate("cart").exec();

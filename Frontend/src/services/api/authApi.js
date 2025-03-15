@@ -1,7 +1,7 @@
 import axios from 'axios';
-
 const API_URL = 'http://localhost:3000/api';
 
+//Register User
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/user/register`, userData);
@@ -67,3 +67,25 @@ export const handleLogin = async (email, password) => {
     throw error;
   }
 };
+
+//Delete User Account
+export const deleteUser = async (email) => {
+  try {
+    const response = await axios.delete(`${API_URL}/user/delete`, { data: { email } });
+    return response.data;
+  } catch (error) {
+    console.error('Error handling delete:', error);
+    throw error;
+  }
+};
+
+//Deactivate User Account
+export const deactivateUser =async () =>{
+  try{
+    const response=await axios.post(`${API_URL}/user/deactivate`)
+    return response.data
+  }catch(error){
+    console.log("Error Occurred : ",error)
+    throw error
+  }
+}

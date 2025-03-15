@@ -1,16 +1,29 @@
 const mongoose = require('mongoose');
 
 const ownerSchema = new mongoose.Schema({
-    fullname: {
+    firstname: {
         type: String,
         minLength: 3,
         trim: true,
+        required: true,
     },
-    email: String,
-    password: String,
-    role:{
-        type:String,
-        default:"owner"
+    lastname: {
+        type: String,
+        minLength: 3,
+        trim: true,
+        required: true,
+    },
+    email: {
+        type: String,
+        trim: true
+    },
+    password: {
+        type: String,
+        trim: true
+    },
+    role: {
+        type: String,
+        default: "owner"
     },
     products: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -19,12 +32,15 @@ const ownerSchema = new mongoose.Schema({
     image: {
         type: Buffer,
     },
-    contact:{
-        type:Number,
-        minLength:10,
-        trim:true
+    contact: {
+        type: Number,
+        minLength: 10,
+        trim: true
     },
-    gstno: String,
+    gstno:{
+        type:String,
+        required: true,
+    }
 });
 
 module.exports = mongoose.model("owner", ownerSchema);

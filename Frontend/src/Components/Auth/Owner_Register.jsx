@@ -5,13 +5,17 @@ import { Eye, EyeOff } from "lucide-react";
 
 const Owner_Register = () => {
   const [formData, setFormData] = useState({
-    fullname: "",
+    firstname: "",
+    lastname: "",
     email: "",
-    password: "",
+    contact: "",
     gstno: "",
+    password: "",
+    confirmPassword: "",
   });
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,10 +28,10 @@ const Owner_Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if(password && e.target.password !== e.target.confirm-password){
+    if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
-    }else{
+    }
     try {
       const response = await axios.post("http://localhost:3000/api/owners/register", formData);
       console.log("Registration successful:", response.data);
@@ -35,7 +39,7 @@ const Owner_Register = () => {
     } catch (error) {
       console.error("Registration error:", error);
       setError(error.response?.data?.message || "Registration failed. Please try again.");
-    }}
+    }
   };
 
   return (
@@ -48,20 +52,37 @@ const Owner_Register = () => {
           <div className="bg-white mt-4 py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 flex flex-col w-full">
             <h4 className="text-xl sm:text-2xl mb-5">Create your account</h4>
             <form autoComplete="off" onSubmit={handleSubmit}>
-              <div>
-                <label htmlFor="fullname" className="block text-sm font-medium text-gray-700">
-                  Full Name
-                </label>
-                <input
-                  id="fullname"
-                  name="fullname"
-                  type="text"
-                  required
-                  value={formData.fullname}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
+                    First Name
+                  </label>
+                  <input
+                    id="firstname"
+                    name="firstname"
+                    type="text"
+                    required
+                    value={formData.firstname}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">
+                    Last Name
+                  </label>
+                  <input
+                    id="lastname"
+                    name="lastname"
+                    type="text"
+                    required
+                    value={formData.lastname}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  />
+                </div>
               </div>
+
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email
@@ -76,19 +97,36 @@ const Owner_Register = () => {
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                 />
               </div>
-              <div>
-                <label htmlFor="gstno" className="block text-sm font-medium text-gray-700">
-                  GST Number
-                </label>
-                <input
-                  id="gstno"
-                  name="gstno"
-                  type="text"
-                  required
-                  value={formData.gstno}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="contact" className="block text-sm font-medium text-gray-700">
+                    Contact
+                  </label>
+                  <input
+                    id="contact"
+                    name="contact"
+                    type="tel"
+                    required
+                    value={formData.contact}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="gstno" className="block text-sm font-medium text-gray-700">
+                    GST Number
+                  </label>
+                  <input
+                    type="text"
+                    id="gstno"
+                    name="gstno"
+                    required
+                    value={formData.gstno}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+
+                  />
+                </div>
               </div>
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -114,25 +152,25 @@ const Owner_Register = () => {
                 </div>
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                 Confirm Password
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  Confirm Password
                 </label>
                 <div className="relative">
                   <input
-                    id="password"
-                    name="confirm-password"
-                    type={showPassword ? "text" : "password"}
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
                     required
-                    value={formData.password}
+                    value={formData.confirmPassword}
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
+                    {showConfirmPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
                   </button>
                 </div>
               </div>

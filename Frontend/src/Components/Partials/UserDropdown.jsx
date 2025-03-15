@@ -45,12 +45,16 @@ export default function UserDropdown({ setIsDropdownOpen }) {
                     </Link>
                 )}
                 {isLoggedIn && role === "user" && (
+                    <>
                     <Link to="/profile">
                         <DropdownItem icon={<User />} text="Profile" />
                     </Link>
+                    <Link to="/orders">
+                    <DropdownItem icon={<Box />} text="Orders" />
+                    </Link>
+                    </>
                 )}
-                <DropdownItem icon={<Star className="text-yellow-500" />} text="SuperCoin Zone" />
-                <DropdownItem icon={<Box />} text="Orders" />
+                <DropdownItem icon={<Star className="text-yellow-500" />} text="SuperCoin Zone" />              
                 <DropdownItem icon={<Bell />} text="Notifications" />
                 {isLoggedIn && (
                     <button onClick={handleLogout} type="button" className="w-full">

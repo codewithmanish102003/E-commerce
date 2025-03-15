@@ -6,13 +6,18 @@ import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    fullname: "",
+    firstname: "",
+    lastname: "",
     email: "",
+    contact: "",
+    gender: "",
     password: "",
+    confirmPassword: "",
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,8 +26,7 @@ const Register = () => {
       const timer = setTimeout(() => {
         setSuccess("");
         setError("");
-      }, 5000); // 5 seconds
-
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [success, error]);
@@ -34,13 +38,14 @@ const Register = () => {
     });
   };
 
-
   const handleRegister = async (e) => {
     e.preventDefault();
-    // if(password && e.target.password !== e.target.confirm-password){
-    //   setError("Passwords do not match");
-    //   return;
-    // }else{
+    
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     try {
       const response = await dispatch(registerUserThunk(formData)).unwrap();
       console.log("Registration successful:", response.message);
@@ -48,46 +53,77 @@ const Register = () => {
     } catch (error) {
       setError(error || "Registration failed. Please try again.");
     }
-  // }
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
-          Welcome to <span className="text-blue-500">Starway Collections</span>
-        </h2>
-      </div>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
+      <div className="max-w-6xl w-full space-y-8 lg:space-y-0 flex flex-col lg:flex-row lg:gap-12">
+        {/* Welcome Section */}
+        <div className="flex-1 flex flex-col justify-center text-center lg:text-left order-1 lg:order-1">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+            Welcome to <br className="hidden sm:block" />
+            <span className="text-blue-500">Starways Collections</span>
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 px-4 lg:px-0">
+            Join our community and discover amazing collections curated just for you.
+          </p>
+          <div className="hidden lg:block mt-[-150px] pt-[-50px]">
+            <img
+              src="/529a37a2-4db1-4213-afb8-d18294c695e9.png"
+              alt="Collections"
+              className="rounded-2xl"
+            />
+          </div>
+        </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl sm:rounded-lg sm:px-10 relative overflow-hidden">
-          {success && (
-            <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4" role="alert">
-              <span className="block sm:inline">{success}</span>
-            </div>
-          )}
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-              <span className="block sm:inline">{error}</span>
-            </div>
-          )}
-          <div className="space-y-6">
-            <h3 className="text-xl font-medium text-gray-900">Create your account</h3>
-            <form onSubmit={handleRegister} className="space-y-4">
-              <div>
-                <label htmlFor="fullname" className="block text-sm font-medium text-gray-700">
-                  Full Name
-                </label>
-                <input
-                  id="fullname"
-                  name="fullname"
-                  type="text"
-                  required
-                  value={formData.fullname}
-                  onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-                />
+        {/* Registration Form */}
+        <div className="flex-1 order-1 lg:order-2">
+          <div className="bg-white py-6 sm:py-8 px-4 sm:px-6 shadow-xl rounded-xl">
+            {success && (
+              <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4">
+                <span className="block sm:inline">{success}</span>
               </div>
+            )}
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                <span className="block sm:inline">{error}</span>
+              </div>
+            )}
+            
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6">Create your account</h2>
+            
+            <form onSubmit={handleRegister} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
+                    First Name
+                  </label>
+                  <input
+                    id="firstname"
+                    name="firstname"
+                    type="text"
+                    required
+                    value={formData.firstname}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">
+                    Last Name
+                  </label>
+                  <input
+                    id="lastname"
+                    name="lastname"
+                    type="text"
+                    required
+                    value={formData.lastname}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email
@@ -102,6 +138,43 @@ const Register = () => {
                   className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                 />
               </div>
+      
+       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="contact" className="block text-sm font-medium text-gray-700">
+                    Contact
+                  </label>
+                  <input
+                    id="contact"
+                    name="contact"
+                    type="tel"
+                    required
+                    value={formData.contact}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+                    Gender
+                  </label>
+                  <select
+                    id="gender"
+                    name="gender"
+                    type="text"
+                    required
+                    value={formData.gender}
+                    onChange={handleChange}
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  >
+                   <option value="">Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  {/* <option value="other">Other</option> */}
+                </select>
+                </div>
+              </div>
+
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                   Password
@@ -125,30 +198,32 @@ const Register = () => {
                   </button>
                 </div>
               </div>
+
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
                   Confirm Password
                 </label>
                 <div className="relative">
                   <input
-                    id="password"
-                    name="confirm-password"
-                    type={showPassword ? "text" : "password"}
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
                     required
-                    value={formData.password}
+                    value={formData.confirmPassword}
                     onChange={handleChange}
                     className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
                   >
-                    {showPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
+                    {showConfirmPassword ? <EyeOff className="h-5 w-5 text-gray-500" /> : <Eye className="h-5 w-5 text-gray-500" />}
                   </button>
                 </div>
               </div>
-              <div className="flex gap-4">
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <button
                   type="submit"
                   className="flex-1 justify-center rounded-full border border-transparent bg-blue-500 py-2 px-4 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
@@ -163,10 +238,14 @@ const Register = () => {
                 </Link>
               </div>
             </form>
-            <div className="mt-4 text-center">
-              <button className="text-sm text-blue-500 hover:text-blue-600 cursor-pointer">
-                Already have an account?<Link to="/login" className="hover:underline"> Login</Link>
-              </button>
+
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600">
+                Already have an account?{" "}
+                <Link to="/login" className="text-blue-500 hover:text-blue-600 hover:underline">
+                  Login
+                </Link>
+              </p>
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const token = useSelector((state) => state.auth.token);
+  const token = localStorage.getItem('token');
   console.log(`isAuthenticated: ${isLoggedIn ? 'true' : 'false'}`);
   console.log(`token: ${token}`);
 

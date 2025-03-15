@@ -7,12 +7,9 @@ mongoose
 .connect(`${config.get("MONGODB_URI")}/scatch`)
 .then(()=>{
     debug("connected");  
-    // console.log("Connected");
-    
 })
 .catch((err)=>{
 debug(err);
-// console.log(err);
 
 })
 

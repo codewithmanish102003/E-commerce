@@ -10,7 +10,7 @@ const NavigationBar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-    const username = useSelector((state) => state.auth.username);
+    const firstname = useSelector((state) => state.auth.firstname);
     const role = useSelector((state) => state.auth.role);
 
     const dispatch = useDispatch();
@@ -45,9 +45,15 @@ const NavigationBar = () => {
         <nav className="shadow-lg bg-white justify-around font-['helvetica_now_display'] fixed w-full z-10">
             <div className="max-w-full px-2 sm:px-6 lg:px-8">
                 <div className="relative flex items-center justify-between h-16 gap-4">
+                    {/* Logo */}
                     <div className="flex-shrink-0">
                         <Link to="/" className="flex items-center">
-                            <h3 className="text-xl">💫wayCollections</h3>
+                            <div className="hidden sm:block">
+                                <h3 className="text-xl">💫wayCollections</h3>
+                            </div>
+                            <div className="sm:hidden">
+                                <h3 className="text-xl">💫</h3>
+                            </div>
                         </Link>
                     </div>
 
@@ -65,7 +71,7 @@ const NavigationBar = () => {
 
                     {/* Mobile menu button */}
                     <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
-                        <div className="relative pl-40">
+                        <div className="relative pl-8">
                             <Search className="absolute pl-1 top-2.5 h-4 w-4 text-gray-400" />
                             <input
                                 type="text"
@@ -73,8 +79,19 @@ const NavigationBar = () => {
                                 className="pl-6 bg-[#F0F5FF] border-none h-9 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                         </div>
+                        {role !== 'owner' && (
+                            <>
+                             <Link to="/" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2">
+                            <HomeIcon className="h-4 w-4" />
+                        </Link>
                         <Link to="/cart" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2">
                             <ShoppingCart className="h-4 w-4" />
+                        </Link>
+                        </>
+                        ) }
+                       
+                        <Link to={role === 'owner' ? "/owner" : "/profile"} className="text-gray-900 hover:bg-gray-700 hover:text-white  px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
+                            <User className="h-4 w-4" />
                         </Link>
                         <button
                             onClick={toggleMenu}
@@ -113,7 +130,7 @@ const NavigationBar = () => {
                                 className="flex items-center font-medium bg-white border rounded-lg shadow-sm hover:bg-gray-100 px-3 py-2"
                             >
                                 <User className="h-4 w-4 mr-2" />
-                                {isLoggedIn ? username : "Profile"}
+                                {isLoggedIn ? firstname : "Profile"}
                                 <ChevronDown className="w-4 h-4 ml-2" />
                             </button>
                             {isDropdownOpen && <UserDropdown setIsDropdownOpen={setIsDropdownOpen} />}
@@ -121,7 +138,7 @@ const NavigationBar = () => {
                         {isLoggedIn ? (
                             <button
                                 onClick={handleLogout}
-                                className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2"
+                                className="text-red-500 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center gap-2"
                             >
                                 <LogOut className="h-4 w-4" />
                                 Logout
@@ -160,10 +177,6 @@ const NavigationBar = () => {
                                     <ShoppingBag className="h-4 w-4" />
                                     Product
                                 </Link>
-                                {/* <Link to="/cart" className="text-gray-900 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
-                                    <ShoppingCart className="h-4 w-4" />
-                                    Cart
-                                </Link> */}
                             </>
                         )}
                         <Link to={role === 'owner' ? "/owner" : "/profile"} className="text-gray-900 hover:bg-gray-700 hover:text-white  px-3 py-2 rounded-md text-base font-medium flex items-center gap-2">
@@ -184,7 +197,6 @@ const NavigationBar = () => {
                                 Login
                             </Link>
                         )}
-                        {isLoggedIn && <UserDropdown setIsDropdownOpen={setIsDropdownOpen} />}
                     </div>
                 </div>
             )}

@@ -6,10 +6,8 @@ export const fetchCartProductsThunk = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await fetchCartProducts();
-      console.log('Cart API response:', response);
       return response;
     } catch (error) {
-      console.error('Error in fetchCartProductsThunk:', error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -30,15 +28,12 @@ export const addToCartThunk = createAsyncThunk(
 
 export const updateQuantityThunk = createAsyncThunk(
   'cart/updateQuantity',
-  async ({ payload }, thunkAPI) => {
-    const { productId, operation } = payload;
-    console.log('updateQuantityThunk:', productId, operation);
+  async ({ productId, operation }, thunkAPI) => {
     try {
       const response = await updateQuantity(productId, operation);
       console.log('updateQuantity response:', response);
       return { productId, operation };
     } catch (error) {
-      console.error('updateQuantity error:', error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }

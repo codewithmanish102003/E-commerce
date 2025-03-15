@@ -5,6 +5,7 @@ const upload = require('../config/multer_config');
 const productModel = require('../models/product_model');
 const isLoggedInUser = require('../middlewares/isLoggedInUser');
 
+//1.fetching all products
 router.get('/', async (req, res) => { 
     try {
         let products = await productModel.find({});
@@ -20,6 +21,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+//2.create a product
 router.post('/create', isLoggedInUser, upload.single('image'), async (req, res) => {
     console.log("create product");
     
@@ -54,5 +56,9 @@ router.post('/create', isLoggedInUser, upload.single('image'), async (req, res) 
         res.status(500).json({ error: error.message });
     }
 });
+
+//3.deleting a created product
+
+//4.updating a created product
 
 module.exports = router;
