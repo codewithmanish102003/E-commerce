@@ -1,4 +1,3 @@
-// filepath: /d:/E-commerce/Backend/app.js
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
@@ -11,7 +10,7 @@ require('dotenv').config();
 const ownersRouter = require('./routes/ownersRouter');
 const productRouter = require('./routes/productsRouter');
 const userRouter = require('./routes/userRouter');
-const cartRouter = require('./routes/cartRouter');
+const cartRouter = require('./routes/cartRouter2');
 
 const db = require('./config/mongoose_connection');
 

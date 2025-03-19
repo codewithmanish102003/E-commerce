@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { fetchUserDetailsThunk } from './app/features/auth/authThunk';
-import Home from './Components/Main/Home';
 import Login from './Components/Auth/Login';
-import Register from './Components/Auth/Register';
 import Owner_Register from './Components/Auth/Owner_Register';
-import Customer from './Components/Dashboard/Customer';
+import ProtectedRoute from './Components/Auth/ProtectedRoute';
+import Register from './Components/Auth/Register';
 import Cart from './Components/Customer/Cart';
 import Orders from './Components/Customer/Orders';
-import Products from './Components/Shop/Products';
-import NavigationBar from './Components/Partials/NavigationBar';
-import Footer from './Components/Partials/Footer';
-import ProductDetails from './Components/Products/ProductDetails';
+import Customer from './Components/Dashboard/Customer';
 import Owner from './Components/Dashboard/Owner';
-import ProtectedRoute from './Components/Auth/ProtectedRoute';
+import Home from './Components/Main/Home';
+import Footer from './Components/Partials/Footer';
+import NavigationBar from './Components/Partials/NavigationBar';
+import ProductDetails from './Components/Products/ProductDetails';
+import Products from './Components/Shop/Products';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const App = () => {
   return (
     <Router>
       <NavigationBar/>
-      <div className='w-full h-3 bg-gray-100 mb-15'></div>
+      <div className='w-full h-3 bg-gray-100 mb-10'></div>
       <Routes className="bg-gray-50">
         {role !== 'owner' && (
           <>

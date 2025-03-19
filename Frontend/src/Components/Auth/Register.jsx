@@ -67,13 +67,7 @@ const Register = () => {
           <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 px-4 lg:px-0">
             Join our community and discover amazing collections curated just for you.
           </p>
-          <div className="hidden lg:block mt-[-150px] pt-[-50px]">
-            <img
-              src="/529a37a2-4db1-4213-afb8-d18294c695e9.png"
-              alt="Collections"
-              className="rounded-2xl"
-            />
-          </div>
+          
         </div>
 
         {/* Registration Form */}

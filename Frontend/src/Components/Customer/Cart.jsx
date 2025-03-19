@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { fetchCartProductsThunk, removeProductThunk, updateQuantityThunk } from '../../app/features/cart/cartThunk';
-import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { FaTrash, FaMinus, FaPlus, FaShoppingBag } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaMinus, FaPlus, FaShoppingBag, FaTrash } from 'react-icons/fa';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCartProductsThunk, removeProductThunk, updateQuantityThunk } from '../../app/features/cart/cartThunk';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -25,6 +25,10 @@ const Cart = () => {
     fetchCartProducts();
   }, []);
 
+  useEffect(() => {
+    dispatch(fetchCartProductsThunk());
+  }, [dispatch]);
+
   const fetchCartProducts = async () => {
     try {
       dispatch(fetchCartProductsThunk());
@@ -32,13 +36,20 @@ const Cart = () => {
       setError(error.message)
     }
   };
+
   const handleQuantityChange = (productId, operation) => {
     console.log(productId, operation)
-    if (operation === 'decrease') {
-     dispatch(updateQuantityThunk({ productId, operation: 'decrease' }));
-    } else if (operation === 'increase') {
-     dispatch(updateQuantityThunk({ productId, operation: 'increase' }));
+    try{
+      if (operation === 'decrease') {
+        const res=dispatch(updateQuantityThunk({ productId, operation: 'decrease' }));
+        setSuccess(res.payload.message)
+      } else if (operation === 'increase') {
+        dispatch(updateQuantityThunk({ productId, operation: 'increase' }));
+      }
+    }catch(err){
+      
     }
+    
   };
 
   const handleRemoveItem = async (e, item) => {
@@ -46,12 +57,11 @@ const Cart = () => {
     setSuccess("");
     setError("");
     try {
-      const response = await dispatch(removeProductThunk(item._id));
-      console.log(response.payload.message)
-      setSuccess(response.payload.message)
-      dispatch(fetchCartProductsThunk())
+      const response = await dispatch(removeProductThunk(item.product._id));
+      console.log(response.payload.message);
+      setSuccess(response.payload.message);
     } catch (err) {
-      setError(response.payload.message)
+      setError(err.message);
     }
   };
 
@@ -61,7 +71,7 @@ const Cart = () => {
 
   const calculateGrandTotal = () => {
     return cart.reduce((total, item) => {
-      const discountedPrice = calculateDiscountedPrice(item.price, item.discount);
+      const discountedPrice = calculateDiscountedPrice(item.product.price, item.product.discount);
       return total + (discountedPrice * (item.quantity || 1));
     }, 0);
   };
@@ -116,7 +126,7 @@ const Cart = () => {
         <div className="lg:col-span-2">
           <div className="space-y-4">
             {cart.map((item, index) => {
-              const discountedPrice = calculateDiscountedPrice(item.price, item.discount);
+              const discountedPrice = calculateDiscountedPrice(item.product.price, item.product.discount);
 
               return (
                 <motion.div
@@ -130,7 +140,7 @@ const Cart = () => {
                     {item.image ? (
                       <img
                         src={`data:image/jpeg;base64,${item.image.toString('base64')}`}
-                        alt={item.name}
+                        alt={item.product.name}
                         className="w-full h-full object-cover rounded-lg"
                       />
                     ) : (
@@ -139,28 +149,28 @@ const Cart = () => {
                         <span className="text-gray-400">No image</span>
                       </div>
                     )}
-                    {item.discount > 0 && (
+                    {item.product.discount > 0 && (
                       <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                        -{item.discount}%
+                        -{item.product.discount}%
                       </div>
                     )}
                   </div>
 
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold">{item.name}</h3>
-                    <p className="text-gray-600 text-sm mt-1">{item.desc}</p>
+                    <h3 className="text-xl font-semibold">{item.product.name}</h3>
+                    <p className="text-gray-600 text-sm mt-1">{item.product.desc}</p>
 
                     <div className="mt-4 flex flex-wrap items-center gap-4">
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => handleQuantityChange(item._id, 'decrease')}
+                          onClick={() => handleQuantityChange(item.product._id, 'decrease')}
                           className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
                         >
                           <FaMinus className="text-gray-600" />
                         </button>
                         <span className="w-8 text-center">{item.quantity}</span>
                         <button
-                          onClick={() => handleQuantityChange(item._id, 'increase')}
+                          onClick={() => handleQuantityChange(item.product._id, 'increase')}
                           className="p-1 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
                         >
                           <FaPlus className="text-gray-600" />
@@ -168,7 +178,7 @@ const Cart = () => {
                       </div>
 
                       <div className="flex items-center space-x-2">
-                        <span className="text-gray-500 line-through">₹{item.price}</span>
+                        <span className="text-gray-500 line-through">₹{item.product.price}</span>
                         <span className="text-lg font-semibold text-green-600">₹{discountedPrice.toFixed(2)}</span>
                       </div>
 

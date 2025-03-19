@@ -47,14 +47,11 @@ const cartSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(updateQuantityThunk.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        const product = state.cart.find(item => item._id === action.payload.productId);
-        if (product) {
-          if (action.payload.operation === 'decrease') {
-            product.quantity -= 1;
-          } else if (action.payload.operation === 'increase') {
-            product.quantity += 1;
-          }
+        const cartItemIndex = state.cart.findIndex(item => item._id === action.payload._id);
+        if (cartItemIndex !== -1) {
+          state.cart[cartItemIndex] = action.payload;
+          state.status="succeeded"
+          
         }
       })
       .addCase(updateQuantityThunk.rejected, (state, action) => {

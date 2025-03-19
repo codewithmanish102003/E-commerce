@@ -5,7 +5,8 @@ export const fetchCartProducts = async () => {
   try {
     const response = await axiosInstance.get('/cart/cartproducts', { withCredentials: true });
     return ({
-      cart: response.data.user
+      // cart: response.data.user
+      cart:response.data.cartItems
     }
     )
   } catch (err) {
@@ -25,21 +26,25 @@ export const addToCart = async (product) => {
   }
 };
 
-//remove from cart
+//remove from the cart
 export const removeFromCart = async (productId) => {
   try {
     const response = await axiosInstance.delete(`/cart/removefromcart/${productId}`, { withCredentials: true });
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || "Failed to remove item from cart");
+    if (error.response.status === 400) {
+      throw new Error(error.response.data.error);
+    } else if (error.response.status === 404) {
+      throw new Error('Cart item not found');
+    } else {
+      throw new Error('Failed to remove item from cart');
+    }
   }
 };
-
 //update quantity of product
 export const updateQuantity = async (productId, operation) => {
   try {
-    const response = await axiosInstance.put(`/cart/updatequantity/${productId}`, {
-      params: { operation },
+    const response = await axiosInstance.put(`/cart/updatequantity/${productId}`,{operation:operation},  { headers: { "Content-Type": "application/json" } },{
       withCredentials: true
     });
     return response.data;
@@ -47,4 +52,3 @@ export const updateQuantity = async (productId, operation) => {
     throw new Error(error.response?.data?.message || "Failed to update quantity");
   }
 };
-

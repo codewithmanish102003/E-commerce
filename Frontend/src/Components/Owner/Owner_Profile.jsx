@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 const Owner_Profile = () => {
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-    const username = useSelector((state) => state.auth.username);
+    const username = useSelector((state) => state.auth.firstname);
     const email = useSelector((state) => state.auth.email);
     const gstno =useSelector((state) => state.auth.gstno);
 

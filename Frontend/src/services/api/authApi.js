@@ -89,3 +89,14 @@ export const deactivateUser =async () =>{
     throw error
   }
 }
+
+//update User details
+export const updateUser =async (user) =>{
+  try{
+    const response=await axios.put(`${API_URL}/user/update`,user)
+    return response.data
+    }catch(error){
+      console.log("Error Occurred : ",error)
+      throw error
+      }
+}

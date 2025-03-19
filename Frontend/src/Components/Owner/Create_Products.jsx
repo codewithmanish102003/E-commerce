@@ -58,7 +58,7 @@ const Create_Products = () => {
                             <h3 className="text-lg font-semibold mb-2">Product Details</h3>
                             <div className="mb-4">
                                 <label className="block mb-2 font-medium">Product Image</label>
-                                <input name="image" type="file" className="py-2 px-4 rounded border" onChange={handleChange} />
+                                <input name="image" type="file"  className="py-2 px-4 rounded border" onChange={handleChange} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <input name="name" type="text" placeholder="Product Name" className="border p-2 rounded w-full" onChange={handleChange} />

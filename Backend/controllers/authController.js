@@ -44,7 +44,7 @@ module.exports.registerUser = async (req, res) => {
 //Register as Owner
 module.exports.registerAdmin = async (req, res) => {
     try {
-        let { email, firstname,lastname, password, image, gstno, contact } = req.body;
+        let { email, firstname, lastname, password, image, gstno, contact } = req.body;
 
         let owner = await ownerModel.findOne({ email });
         if (owner) {
@@ -83,7 +83,7 @@ module.exports.loginUser = async (req, res) => {
     let { email, password } = req.body;
     console.log("route login")
     let user = await userModel.findOne({ email });
-   
+
     if (!user) {
         let owner = await ownerModel.findOne({ email });
         if (owner) {
@@ -179,5 +179,29 @@ module.exports.deactivateUser = async (req, res) => {
     }
 };
 
-
-
+//update a user account details
+module.exports.updateUser = async (req, res) => {
+    try {
+      const userId = req.user?._id;
+      if (!userId) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      const user = await userModel.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      const { firstname, lastname, email, contact } = req.body;
+      user.firstname = firstname;
+      user.lastname = lastname;
+      user.email = email;
+      user.contact = contact;
+      await user.save();
+      req.flash('success', "user details updated succeessfully")
+      res.json({ message: 'User account updated successfully', flash: req.flash() });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };

@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { logoutThunk } from '../../app/features/auth/authThunk';
-import { deleteUserThunk } from '../../app/features/auth/authThunk';
 import {
-  User,
-  Package,
-  Settings,
-  CreditCard,
-  Gift,
-  Heart,
-  Bell,
-  LogOut,
-  ChevronRight,
-  Edit2,
-  HelpCircle,
+    ChevronRight,
+    CreditCard,
+    Edit2,
+    Gift,
+    LogOut,
+    Package,
+    Settings,
+    User
 } from 'lucide-react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { deleteUserThunk, logoutThunk, updateUserThunk } from '../../app/features/auth/authThunk';
 
 function Profile() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -23,13 +19,15 @@ function Profile() {
   const lastname = useSelector((state) => state.auth.lastname);
   const email = useSelector((state) => state.auth.email);
   const phone = useSelector((state) => state.auth.phone);
+  const gen = useSelector((state) => state.auth.gender);
   // const address = useSelector((state) => state.auth.address);
   // const dob = useSelector((state) => state.auth.dob);
-  const gen = useSelector((state) => state.auth.gender);
   // const city = useSelector((state) => state.auth.city);
   const [activeSection, setActiveSection] = useState('profile');
   const [gender, setGender] = useState(gen);
   const [isEditing, setIsEditing] = useState(false);
+  // const [isDeleting,setIsDeleting]=useState()
+  const [error,setError]=useState(null)
   const [firstnameState, setFirstname] = useState(firstname);
   const [lastnameState, setLastname] = useState(lastname);
   const [emailState, setEmail] = useState(email);
@@ -55,11 +53,14 @@ function Profile() {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
-      const response = await dispatch(updateProfileThunk(firstnameState, lastnameState, emailState, phoneState));
+      if (!firstnameState || !lastnameState || !emailState || !phoneState) {
+        throw new Error('Please fill in all fields');
+      }
+      const response = await dispatch(updateUserThunk(firstnameState, lastnameState, emailState, phoneState));
       console.log(response);
       setIsEditing(false);
     } catch (error) {
-      console.error(error);
+      setError(error.message);
     }
   };
   return (
@@ -174,7 +175,7 @@ function Profile() {
                             <label className="block text-sm text-gray-600 mb-2">First Name</label>
                             <input
                               type="text"
-                              value={firstname}
+                              value={firstnameState}
                               onChange={(e) => setFirstname(e.target.value)}
                               className="w-full p-2 border rounded-md"
                             />
@@ -184,7 +185,7 @@ function Profile() {
                             <label className="block text-sm text-gray-600 mb-2">Last Name</label>
                             <input
                               type="text"
-                              value={lastname}
+                              value={lastnameState}
                               onChange={(e) => setLastname(e.target.value)}
                               className="w-full p-2 border rounded-md"
                             />
@@ -194,7 +195,7 @@ function Profile() {
                             <label className="block text-sm text-gray-600 mb-2">Email Address</label>
                             <input
                               type="email"
-                              value={email}
+                              value={emailState}
                               onChange={(e) => setEmail(e.target.value)}
                               className="w-full p-2 border rounded-md"
                             />
@@ -204,7 +205,7 @@ function Profile() {
                             <label className="block text-sm text-gray-600 mb-2">Mobile Number</label>
                             <input
                               type="tel"
-                              value={phone}
+                              value={phoneState}
                               onChange={(e) => setPhone(e.target.value)}
                               className="w-full p-2 border rounded-md"
                             />
@@ -224,7 +225,7 @@ function Profile() {
                           <label className="block text-sm text-gray-600 mb-2">First Name</label>
                           <input
                             type="text"
-                            value={`${firstname}`}
+                            value={firstnameState}
                             disabled
                             className="w-full p-2 border rounded-md bg-gray-50"
                           />
@@ -234,7 +235,7 @@ function Profile() {
                           <label className="block text-sm text-gray-600 mb-2">Last Name</label>
                           <input
                             type="text"
-                            value={`${lastname}`}
+                            value={lastnameState}
                             disabled
                             className="w-full p-2 border rounded-md bg-gray-50"
                           />
@@ -248,7 +249,7 @@ function Profile() {
                                 type="radio"
                                 name="gender"
                                 value="male"
-                                checked={gender === `${gender}`}
+                                checked={gender === "male"}
                                 onChange={(e) => setGender(e.target.value)}
                                 className="text-blue-600"
                               />
@@ -258,8 +259,8 @@ function Profile() {
                               <input
                                 type="radio"
                                 name="gender"
-                                value={`${gender}`}
-                                checked={gender === `${gender}`}
+                                value="female"
+                                checked={gender === "female"}
                                 onChange={(e) => setGender(e.target.value)}
                                 className="text-blue-600"
                               />
@@ -267,13 +268,12 @@ function Profile() {
                             </label>
                           </div>
                         </div>
-
                         <div>
                           <label className="block text-sm text-gray-600 mb-2">Email Address</label>
                           <div className="flex items-center justify-between">
                             <input
                               type="email"
-                              value={`${email}`}
+                              value={emailState}
                               disabled
                               className="w-full p-2 border rounded-md bg-gray-50"
                             />
@@ -285,7 +285,7 @@ function Profile() {
                           <div className="flex items-center justify-between">
                             <input
                               type="tel"
-                              value={`${phone}`}
+                              value={phoneState}
                               disabled
                               className="w-full p-2 border rounded-md bg-gray-50"
                             />
